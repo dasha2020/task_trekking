@@ -6,9 +6,9 @@ from .models import Task, Comment
 
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
-    list_display = ('title', 'status', 'deadline', 'created_at')
+    list_display = ('title', 'status', 'priority', 'deadline', 'created_at')
     search_fields = ('title',)
-    list_filter = ('status',)
+    list_filter = ('status', 'priority',)
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):

@@ -3,8 +3,6 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
-#add priority
-
 class Task(models.Model):
     statuses = [
         ('is_done', 'Done'),
@@ -23,16 +21,11 @@ class Task(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     deadline = models.DateTimeField(null=True)
 
-    def __str__(self):
-        return f"{self.title}"
-
 class Comment(models.Model):
     text = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
-    task = models.ForeignKey(Task, on_delete=models.SET_NULL, null=True)
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    task = models.ForeignKey(Task, on_delete=models.SET_NULL)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL)
 
-    def __str__(self):
-        return f"{self.task} - {self.text}"
 
 
