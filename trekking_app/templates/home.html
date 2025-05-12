@@ -12,27 +12,27 @@
 <body>
     <div class="center_div">
         <h1>List of our tasks</h1>
-        <div class="horizontal">
-            <h3>Title</h3>
-            <h3>Description</h3>
-            <h3>Status</h3>
-            <h3>Priority</h3>
-            <h3>Created</h3>
-            <h3>Deadline</h3>
-        </div>
-        <hr>
-        {% for task in tasks %}
-        <div class="info">
-            <h3>{{task.title}}</h3>
-            <h3>{{task.description}}</h3>
-            <h3>{{task.status}}</h3>
-            <h3>{{task.priotity}}</h3>
-            <h3>{{task.created_at}}</h3>
-            <h3>{{task.deadline}}</h3>
-        </div>
-        <hr>
-        {% endfor %}
     </div>
+    {% for task in tasks %}
+    <div class="rect">
+        <h2>{{task.title}}</h2>
+        <p>{{task.description}}</p>
+        <div class="rect_element">{{task.priority}}</div>
+        <div class="rect_element1">{{ task.created_at.split(",")[0] }}</div>
+        <div class="rect_element2">{{task.deadline}}</div>
+        <div class="rect_element3">{{task.status}}</div>
+        <button class="openpopup">More...</button>
+        <p>The month is: <span id="month"></span></p>
+    </div>
+    {% endfor %}
+    
+    <script>
+        const string = "{{task.created_at}}";
+        console.log("Date string:", string);
+        const date = new Date(string);
+        const month = date.toLocaleString('en-US', { month: 'long', day:"numeric" });
+        document.getElementById("month").textContent = month;
+    </script>
         
 </body>
 </html>

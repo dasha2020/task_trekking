@@ -26,6 +26,13 @@ h3 {
     font-size: 18px;
 }
 
+h2 {
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-weight: 700;
+    color: #111111;
+    font-size: 25px;
+}
+
 .center_div {
     margin: 0 auto;
     max-width: 800px;
@@ -33,6 +40,7 @@ h3 {
 
 .horizontal {
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
     font-weight: bold;
     margin-bottom: 50px;
@@ -65,4 +73,73 @@ h3 {
     flex-direction: column;
     margin-left: 50px;
     margin-right: 50px;
+}
+
+.rect {
+    width: 250px;
+    height: 250px;
+    position: relative;
+    background: #ccc;
+    border: 1px solid #333;
+    padding: 15px 15px 15px 15px;
+    margin-left: 50px;
+}
+  
+.rect_element {
+    width: 35px;
+    height: 35px;
+    background: red;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+}
+
+.rect_element1 {
+    width: 35px;
+    height: 35px;
+    background: red;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    z-index: 0;
+}
+
+.rect_element2 {
+    width: 35px;
+    height: 35px;
+    background: blue;
+    position: absolute;
+    left: 35px; 
+    bottom: 0;
+    z-index: 0;
+}
+
+.rect_element3 {
+    width: 35px;
+    height: 35px;
+    background: blue;
+    position: absolute;
+    right: 0; 
+    bottom: 35px;
+    z-index: 0;
+}
+
+.openpopup {
+    width: 100px;
+    height: 35px;
+    background: blue;
+    position: absolute;
+    right: 0; 
+    bottom: 0;
+    z-index: 0;
+}
+
+
+.draggable_area {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    background: lightgray;
+    overflow: hidden;
 }

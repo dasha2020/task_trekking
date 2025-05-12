@@ -18,8 +18,8 @@ from django.contrib.auth.models import User
 class ViewAllTasks(View):
     template_name = 'home.html'
     def get_context_data(self, **kwargs):
-        context =  super().get_context_data(**kwargs)
-        context["css_file"] = 'trekking_app/styles.css'
+        context = kwargs
+        context["css_file"] = 'styles.css'
         return context
     
     def get(self, request):
