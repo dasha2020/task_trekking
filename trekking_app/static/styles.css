@@ -1,0 +1,68 @@
+body {
+    background-color: #000000;
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: 'AndersonGrotesk'; 
+    src: url('../static/albums/fonts/AndersonGroteskBlack.woff2') format('woff2');
+    font-weight: bold;
+    font-style: bold;
+}
+
+
+h1 {
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-weight: 900;
+    color: #d1d1d1;
+    margin-top: 55px;
+}
+
+h3 {
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-weight: 700;
+    color: #f1f1f1;
+    font-size: 18px;
+}
+
+.center_div {
+    margin: 0 auto;
+    max-width: 800px;
+}
+
+.horizontal {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    margin-bottom: 50px;
+    padding-bottom: 5px;
+    margin-top: 50px;
+}
+
+.horizontal h3 {
+    margin: 0;
+    padding: 0 10px;
+    width: 22%; 
+    text-align: left;
+}
+
+.info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.info h3 {
+    margin: 0;
+    padding: 0 10px;
+    width: 25%;
+    text-align: left;
+}
+
+.vertical {
+    display: flex; 
+    flex-direction: column;
+    margin-left: 50px;
+    margin-right: 50px;
+}

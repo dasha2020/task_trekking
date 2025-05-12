@@ -7,7 +7,7 @@ from django.db import IntegrityError
 from django.views.generic.base import TemplateView, View
 from django.views.generic.edit import FormView
 from django.urls import reverse, reverse_lazy
-from .forms import CreateTaskForm
+#from .forms import CreateTaskForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -15,10 +15,11 @@ from django.contrib.auth.models import User
 
 # Create your views here.
 
-class Home(TemplateView):
+class ViewAllTasks(View):
     template_name = 'home.html'
     def get_context_data(self, **kwargs):
         context =  super().get_context_data(**kwargs)
+        context["css_file"] = 'trekking_app/styles.css'
         return context
     
     def get(self, request):

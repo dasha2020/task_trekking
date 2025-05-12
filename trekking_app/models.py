@@ -24,8 +24,8 @@ class Task(models.Model):
 class Comment(models.Model):
     text = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
-    task = models.ForeignKey(Task, on_delete=models.SET_NULL)
-    user = models.ForeignKey(User, on_delete=models.SET_NULL)
+    task = models.ForeignKey(Task, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
 
 
