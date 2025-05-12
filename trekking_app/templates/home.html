@@ -13,12 +13,23 @@
     <div class="center_div">
         <h1>List of our tasks</h1>
     </div>
+    <form method="get" action="{% url 'filter' %}" novalidate>
+        {% csrf_token %}
+        <select name="status" id="status">
+            <option value="">All</option>
+            <option value="done">Done</option>
+            <option value="in_progress">In Progress</option>
+            <option value="not_done">Not Done</option>
+        </select>
+        <button type="submit">Filter</button>
+        
+    </form>
     {% for task in tasks %}
     <div class="rect">
         <h2>{{task.title}}</h2>
         <p>{{task.description}}</p>
         <div class="rect_element">{{task.priority}}</div>
-        <div class="rect_element1">{{ task.created_at.split(",")[0] }}</div>
+        <div class="rect_element1">{{ task.created_at }}</div>
         <div class="rect_element2">{{task.deadline}}</div>
         <div class="rect_element3">{{task.status}}</div>
         <button class="openpopup">More...</button>

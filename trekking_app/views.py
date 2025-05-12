@@ -23,6 +23,16 @@ class ViewAllTasks(View):
         return context
     
     def get(self, request):
+        if request.path == reverse('filter'):
+            tasks = Task.objects.all()
+            status = request.GET.get('status')
+            if status:
+                if status != "All":
+                    tasks = tasks.filter(status=status)
+                    context = self.get_context_data(tasks=tasks)
+                else:
+                    context = self.get_context_data(tasks=tasks)
+                return render(request, 'home.html', context)
         tasks = Task.objects.all()
         context = self.get_context_data(tasks=tasks)
         return render(request, 'home.html', context)
