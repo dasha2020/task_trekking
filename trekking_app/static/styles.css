@@ -192,17 +192,43 @@ h2 {
 
 #add_task_dialog {
     display: none;
-    position: fixed;
+    position: relative;
     width: 500px;
     height: 550px;
     padding: 20px;
     margin-left: 500px;
     margin-right: 300px;
-    margin-bottom: 250px;
+    margin-bottom: 600px;
     background-color: #fff;
     border: 1px solid #ccc;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 1000;
+}
+
+#detailed_task_dialog {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 30px;
+    width: 500px;
+    max-width: 90%;
+    border-radius: 8px;
+    z-index: 1000; /* above the overlay */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+#overlay1 {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* translucent black */
+    z-index: 999; /* on top of normal content */
 }
 
 #add_task_dialog h2 {

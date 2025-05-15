@@ -12,13 +12,83 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
+from .forms import TaskForm
 
 # Create your views here.
+
+class TaskFormView(FormView):
+    form_class = TaskForm
+    success_url = "/home/"
+    template_name = "home.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        self.task_id = kwargs.get('task_id')
+        self.task = None
+        if self.task_id:
+            self.task = Task.objects.get(id=self.task_id)
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_initial(self):
+        if self.task:
+            return {
+                'title': self.task.title,
+                'description': self.task.description,
+                'status': self.task.status,
+                'priority': self.task.priority,
+                'deadline': self.task.deadline,
+            }
+        return super().get_initial()
+    
+    def get(self, request, *args, **kwargs):
+        tasks = Task.objects.all()
+        context = self.get_context_data(tasks=tasks, popup=True)
+
+        if self.task:
+            form = TaskForm(initial=self.get_initial())
+        else:
+            form = TaskForm()
+
+        context = self.get_context_data(task=self.task, form=form, popup=True)
+        context["css_file"] = 'styles.css'
+        return render(request, "home.html", context)
+    
+    def post(self, request, *args, **kwargs):
+        if 'cancel' in request.POST:
+            tasks = Task.objects.all()
+            context = self.get_context_data(tasks=tasks, popup=False)
+            context["css_file"] = 'styles.css'
+            return render(request, 'home.html', context)
+
+        return super().post(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        title = form.cleaned_data['title']
+        description = form.cleaned_data['description']
+        status = form.cleaned_data['status']
+        priority = form.cleaned_data['priority']
+        deadline = form.cleaned_data['deadline']
+
+        if self.task:
+            self.task.title = title
+            self.task.description = description
+            self.task.status = status
+            self.task.priority = priority
+            self.task.deadline = deadline
+            self.task.save()
+        else:
+            Task.objects.create(title=title, description=description, status=status, priority=priority, deadline=deadline)
+
+        tasks = Task.objects.all()
+        context = self.get_context_data(tasks=tasks, popup=False)
+        context["css_file"] = 'styles.css'
+        return render(self.request, 'home.html', context)
+
 
 class ViewAllTasks(View):
     def get_context_data(self, **kwargs):
         context = kwargs
         context["css_file"] = 'styles.css'
+        context["form"] = TaskForm()
         return context
     
     def get(self, request, task_id=None):
@@ -40,6 +110,7 @@ class ViewAllTasks(View):
                 else:
                     context = self.get_context_data(tasks=tasks)
                 return render(request, 'home.html', context)
+
         tasks = Task.objects.all()
         context = self.get_context_data(tasks=tasks)
         return render(request, 'home.html', context)
@@ -64,7 +135,7 @@ class ViewAllTasks(View):
             return render(request, 'home.html', context)
         
         elif task_id:
-            if request.path == reverse('edit_student', kwargs={'task_id': task_id}):
+            if request.path == reverse('edit_task', kwargs={'task_id': task_id}):
                 return self.update(request, task_id)
     
     def update(self, request, task_id):

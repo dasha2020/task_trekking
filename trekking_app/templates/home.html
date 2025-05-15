@@ -104,9 +104,9 @@
     {% endfor %}
     </div>
     {% if popup %}
-    <div id="overlay"></div>
-    <div id="detailed_task_dialog">
-        <h2>Add Task</h2>
+    <div id="overlay1" style="display: block;"></div>
+    <div id="detailed_task_dialog" style="display: block;">
+        <h2>Edit Task</h2>
         <form method="post" novalidate>
             {% csrf_token %}
             <div class="vertical_form">
@@ -177,14 +177,6 @@
             document.getElementById(
                 "add_task_dialog"
             ).style.display = "none";
-        }
-        function detailed_task() {
-            document.getElementById(
-                "overlay"
-            ).style.display = "block";
-            document.getElementById(
-                "detailed_task_dialog"
-            ).style.display = "block";
         }
     </script>
         
