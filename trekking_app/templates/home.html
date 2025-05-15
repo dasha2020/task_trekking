@@ -13,6 +13,43 @@
     <div class="center_div">
         <h1>List of our tasks</h1>
     </div>
+    <button onclick="add_task()" class="add_task">
+        Add task
+    </button>
+    <div id="overlay"></div>
+    <div id="add_task_dialog">
+        <h2>Add Task</h2>
+        <form method="post" action="{% url 'add_task' %}" novalidate>
+            {% csrf_token %}
+            <div class="vertical_form">
+            <label>Title: </label>
+            <input type="text" name="title" placeholder="Task Name" required />
+
+            <label>Description: </label>
+            <input type="text" name="description" placeholder="What is your task about" required />
+
+            <label>Status: </label>
+            <select name="status" id="status" required>
+                <option value="done">Done</option>
+                <option value="in_progress">In Progress</option>
+                <option value="not_done">Not Done</option>
+            </select>
+            <label>Priority: </label>
+            <select name="priority" id="priority" required>
+                <option value="urgent">Urgent</option>
+                <option value="not_urgent">Not Urgent</option>
+            </select>
+            <label>Deadline: </label>
+
+            <input type="datetime-local" name="deadline" required />
+
+            <button type="submit" class="add_btn">Add Task</button>
+            </div>
+        </form>
+        <button onclick="close_popup()" class="close_btn">
+            Close
+        </button>
+    </div>
     <form method="get" action="{% url 'filter' %}" class="filter_status" novalidate>
         {% csrf_token %}
         <label>Status: </label>
@@ -31,9 +68,11 @@
         <button type="submit">Filter</button>
         
     </form>
+    <div class="task_div">
     {% for task in tasks %}
     <div class="task">
         <h2>{{task.title}}</h2>
+        <br>
         <p>{{task.description}}</p>
         <div class="priority">{{task.get_priority_display }}</div>
         <div class="created_at">{{ task.created_at|date:"F j" }}</div>
@@ -42,9 +81,25 @@
         <button class="openpopup">More...</button>
     </div>
     {% endfor %}
+    </div>
     
     <script>
-        
+        function add_task() {
+            document.getElementById(
+                "overlay"
+            ).style.display = "block";
+            document.getElementById(
+                "add_task_dialog"
+            ).style.display = "block";
+        }
+        function close_popup() {
+            document.getElementById(
+                "overlay"
+            ).style.display = "none";
+            document.getElementById(
+                "add_task_dialog"
+            ).style.display = "none";
+        }
     </script>
         
 </body>

@@ -44,4 +44,23 @@ class ViewAllTasks(View):
         tasks = Task.objects.all()
         context = self.get_context_data(tasks=tasks)
         return render(request, 'home.html', context)
+    def post(self, request):
+        if request.path == reverse('add_task'):
+            title = request.POST.get('title')
+            description = request.POST.get('description')
+            status = request.POST.get('status')
+            priority = request.POST.get('priority')
+            deadline = request.POST.get('deadline')
+
+            task = Task(title=title, description=description, status=status, priority=priority, deadline=deadline)
+
+            try:
+                task.save()
+                messages.success(request, 'Task created successfully!')
+            except IntegrityError as e:
+                messages.error(request, f"Error: {str(e)}")
+
+            tasks = Task.objects.all()
+            context = self.get_context_data(tasks=tasks)
+            return render(request, 'home.html', context)
 
