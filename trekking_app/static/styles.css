@@ -76,63 +76,84 @@ h2 {
 }
 
 .rect {
-    width: 250px;
+    width: 350px;
     height: 250px;
     position: relative;
     background: #ccc;
     border: 1px solid #333;
     padding: 15px 15px 15px 15px;
     margin-left: 50px;
+    margin-top: 55px;
 }
   
-.rect_element {
-    width: 35px;
+.priority {
+    width: 105px;
     height: 35px;
-    background: red;
+    background: rgb(255, 187, 0);
     position: absolute;
     top: 0;
     right: 0;
     z-index: 1;
+    padding: 5px;
+    font-family: 'Hanken Grotesk', sans-serif;
 }
 
-.rect_element1 {
-    width: 35px;
-    height: 35px;
-    background: red;
+.created_at {
+    width: 65px;
+    height: 55px;
+    background: rgb(89, 179, 67);
     position: absolute;
     left: 0;
     bottom: 0;
     z-index: 0;
+    padding: 5px;
+    font-family: 'Hanken Grotesk', sans-serif;
 }
 
-.rect_element2 {
-    width: 35px;
-    height: 35px;
-    background: blue;
+.deadline {
+    width: 115px;
+    height: 55px;
+    background: rgb(67, 153, 179);
     position: absolute;
-    left: 35px; 
+    left: 65px; 
     bottom: 0;
     z-index: 0;
+    padding: 5px;
+    font-family: 'Hanken Grotesk', sans-serif;
 }
 
-.rect_element3 {
-    width: 35px;
+.status {
+    width: 105px;
     height: 35px;
-    background: blue;
+    background: rgb(94, 102, 209);
     position: absolute;
     right: 0; 
-    bottom: 35px;
+    top: 35px;
     z-index: 0;
+    padding: 5px;
+    font-family: 'Hanken Grotesk', sans-serif;
 }
 
 .openpopup {
-    width: 100px;
-    height: 35px;
-    background: blue;
+    width: 105px;
+    height: 55px;
+    background: rgb(255, 92, 51);
     position: absolute;
     right: 0; 
     bottom: 0;
     z-index: 0;
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    border: rgb(51, 132, 255);
+
+}
+
+.filter_status {
+    margin-left: 50px;
+    margin-top: 50px;
+    font-family: 'Hanken Grotesk', sans-serif;
+
 }
 
 
