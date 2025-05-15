@@ -16,13 +16,12 @@ from django.contrib.auth.models import User
 # Create your views here.
 
 class ViewAllTasks(View):
-    template_name = 'home.html'
     def get_context_data(self, **kwargs):
         context = kwargs
         context["css_file"] = 'styles.css'
         return context
     
-    def get(self, request):
+    def get(self, request, task_id=None):
         if request.path == reverse('filter'):
             tasks = Task.objects.all()
             status = request.GET.get('status')
@@ -44,7 +43,7 @@ class ViewAllTasks(View):
         tasks = Task.objects.all()
         context = self.get_context_data(tasks=tasks)
         return render(request, 'home.html', context)
-    def post(self, request):
+    def post(self, request, task_id=None):
         if request.path == reverse('add_task'):
             title = request.POST.get('title')
             description = request.POST.get('description')
@@ -63,4 +62,24 @@ class ViewAllTasks(View):
             tasks = Task.objects.all()
             context = self.get_context_data(tasks=tasks)
             return render(request, 'home.html', context)
+        
+        elif task_id:
+            if request.path == reverse('edit_student', kwargs={'task_id': task_id}):
+                return self.update(request, task_id)
+    
+    def update(self, request, task_id):
+        task = Task.objects.get(id=task_id)
+
+        if request.method == 'POST':
+            task.title = request.POST.get('title')
+            task.description = request.POST.get('description')
+            task.status = request.POST.get('status')
+            task.priority = request.POST.get('priority')
+            task.deadline = request.POST.get('deadline')
+            task.save()
+
+            return HttpResponseRedirect(reverse('home'))
+
+        context = self.get_context_data(task=task, popup=True)
+        return render(request, 'home.html', context)
 

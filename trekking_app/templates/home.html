@@ -11,8 +11,9 @@
 </head>
 <body>
     <div class="center_div">
-        <h1>List of our tasks</h1>
+        
     </div>
+    <h1>List of our tasks</h1>
     <button onclick="add_task()" class="add_task">
         Add task
     </button>
@@ -78,10 +79,46 @@
         <div class="created_at">{{ task.created_at|date:"F j" }}</div>
         <div class="deadline">{{task.deadline|date:"F j H:i"}}</div>
         <div class="status">{{task.get_status_display}}</div>
-        <button class="openpopup">More...</button>
+        <a href="{% url 'edit_task' task_id=task.id %}" class="openpopup">More...</a>
     </div>
     {% endfor %}
     </div>
+    {% if popup %}
+    <div id="overlay"></div>
+    <div id="detailed_task_dialog">
+        <h2>Add Task</h2>
+        <form method="post" action="{% url 'add_task' %}" novalidate>
+            {% csrf_token %}
+            <div class="vertical_form">
+            <label>Title: </label>
+            <input type="text" name="title" placeholder="Task Name" required />
+
+            <label>Description: </label>
+            <input type="text" name="description" placeholder="What is your task about" required />
+
+            <label>Status: </label>
+            <select name="status" id="status" required>
+                <option value="done">Done</option>
+                <option value="in_progress">In Progress</option>
+                <option value="not_done">Not Done</option>
+            </select>
+            <label>Priority: </label>
+            <select name="priority" id="priority" required>
+                <option value="urgent">Urgent</option>
+                <option value="not_urgent">Not Urgent</option>
+            </select>
+            <label>Deadline: </label>
+
+            <input type="datetime-local" name="deadline" required />
+
+            <button type="submit" class="add_btn">Add Task</button>
+            </div>
+        </form>
+        <button onclick="close_popup()" class="close_btn">
+            Close
+        </button>
+    </div>
+    {% endif %}
     
     <script>
         function add_task() {
@@ -99,6 +136,14 @@
             document.getElementById(
                 "add_task_dialog"
             ).style.display = "none";
+        }
+        function detailed_task() {
+            document.getElementById(
+                "overlay"
+            ).style.display = "block";
+            document.getElementById(
+                "detailed_task_dialog"
+            ).style.display = "block";
         }
     </script>
         
