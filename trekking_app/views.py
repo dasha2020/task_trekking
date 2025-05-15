@@ -71,14 +71,23 @@ class ViewAllTasks(View):
         task = Task.objects.get(id=task_id)
 
         if request.method == 'POST':
-            task.title = request.POST.get('title')
-            task.description = request.POST.get('description')
-            task.status = request.POST.get('status')
-            task.priority = request.POST.get('priority')
-            task.deadline = request.POST.get('deadline')
-            task.save()
+            if 'cancel' in request.POST:
+                tasks = Task.objects.all()
+                context = self.get_context_data(tasks=tasks, popup=False)
+                return render(request, 'home.html', context)
+                
+            if 'save' in request.POST:
+                task.title = request.POST.get('title')
+                task.description = request.POST.get('description')
+                task.status = request.POST.get('status')
+                task.priority = request.POST.get('priority')
+                task.deadline = request.POST.get('deadline')
+                task.save()
 
-            return HttpResponseRedirect(reverse('home'))
+                tasks = Task.objects.all()
+                context = self.get_context_data(tasks=tasks, popup=False)
+                return render(request, 'home.html', context)
+
 
         context = self.get_context_data(task=task, popup=True)
         return render(request, 'home.html', context)

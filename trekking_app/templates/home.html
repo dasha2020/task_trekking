@@ -23,26 +23,46 @@
         <form method="post" action="{% url 'add_task' %}" novalidate>
             {% csrf_token %}
             <div class="vertical_form">
-            <label>Title: </label>
-            <input type="text" name="title" placeholder="Task Name" required />
+                <div class="mb-3">
+                    <div>{{ form.title.label_tag }}</div>
+                    {{ form.title }}
 
-            <label>Description: </label>
-            <input type="text" name="description" placeholder="What is your task about" required />
+                    {% if form.title.errors %}
+                        <div class="text-danger">{{ form.title.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    <div>{{ form.description.label_tag }}</div>
+                    {{ form.description }}
 
-            <label>Status: </label>
-            <select name="status" id="status" required>
-                <option value="done">Done</option>
-                <option value="in_progress">In Progress</option>
-                <option value="not_done">Not Done</option>
-            </select>
-            <label>Priority: </label>
-            <select name="priority" id="priority" required>
-                <option value="urgent">Urgent</option>
-                <option value="not_urgent">Not Urgent</option>
-            </select>
-            <label>Deadline: </label>
+                    {% if form.description.errors %}
+                        <div class="text-danger">{{ form.description.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    <div>{{ form.status.label_tag }}</div>
+                    {{ form.status }}
 
-            <input type="datetime-local" name="deadline" required />
+                    {% if form.status.errors %}
+                        <div class="text-danger">{{ form.status.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    <div>{{ form.priority.label_tag }}</div>
+                    {{ form.priority }}
+
+                    {% if form.priority.errors %}
+                        <div class="text-danger">{{ form.priority.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    <div>{{ form.deadline.label_tag }}</div>
+                    {{ form.deadline }}
+
+                    {% if form.deadline.errors %}
+                        <div class="text-danger">{{ form.deadline.errors }}</div>
+                    {% endif %}
+                </div>
 
             <button type="submit" class="add_btn">Add Task</button>
             </div>
@@ -87,36 +107,57 @@
     <div id="overlay"></div>
     <div id="detailed_task_dialog">
         <h2>Add Task</h2>
-        <form method="post" action="{% url 'add_task' %}" novalidate>
+        <form method="post" novalidate>
             {% csrf_token %}
             <div class="vertical_form">
-            <label>Title: </label>
-            <input type="text" name="title" placeholder="Task Name" required />
+                <div class="mb-3">
+                    <div>{{ form.title.label_tag }}</div>
+                    {{ form.title }}
 
-            <label>Description: </label>
-            <input type="text" name="description" placeholder="What is your task about" required />
+                    {% if form.title.errors %}
+                        <div class="text-danger">{{ form.title.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    <div>{{ form.description.label_tag }}</div>
+                    {{ form.description }}
 
-            <label>Status: </label>
-            <select name="status" id="status" required>
-                <option value="done">Done</option>
-                <option value="in_progress">In Progress</option>
-                <option value="not_done">Not Done</option>
-            </select>
-            <label>Priority: </label>
-            <select name="priority" id="priority" required>
-                <option value="urgent">Urgent</option>
-                <option value="not_urgent">Not Urgent</option>
-            </select>
-            <label>Deadline: </label>
+                    {% if form.description.errors %}
+                        <div class="text-danger">{{ form.description.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    <div>{{ form.status.label_tag }}</div>
+                    {{ form.status }}
 
-            <input type="datetime-local" name="deadline" required />
+                    {% if form.status.errors %}
+                        <div class="text-danger">{{ form.status.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    <div>{{ form.priority.label_tag }}</div>
+                    {{ form.priority }}
 
-            <button type="submit" class="add_btn">Add Task</button>
+                    {% if form.priority.errors %}
+                        <div class="text-danger">{{ form.priority.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    <div>{{ form.deadline.label_tag }}</div>
+                    {{ form.deadline }}
+
+                    {% if form.deadline.errors %}
+                        <div class="text-danger">{{ form.deadline.errors }}</div>
+                    {% endif %}
+                </div>
+
+            <button type="submit" class="add_btn" name='save' value='save'>Save</button>
+            <button type="submit" class="add_btn" name='cancel' value='cancel' class="close_btn">
+                Close
+            </button>
             </div>
         </form>
-        <button onclick="close_popup()" class="close_btn">
-            Close
-        </button>
+        
     </div>
     {% endif %}
     
