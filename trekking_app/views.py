@@ -26,9 +26,17 @@ class ViewAllTasks(View):
         if request.path == reverse('filter'):
             tasks = Task.objects.all()
             status = request.GET.get('status')
+            priority = request.GET.get('priority')
             if status:
                 if status != "All":
                     tasks = tasks.filter(status=status)
+                    context = self.get_context_data(tasks=tasks)
+                else:
+                    context = self.get_context_data(tasks=tasks)
+                return render(request, 'home.html', context)
+            if priority:
+                if priority != "All":
+                    tasks = tasks.filter(priority=priority)
                     context = self.get_context_data(tasks=tasks)
                 else:
                     context = self.get_context_data(tasks=tasks)

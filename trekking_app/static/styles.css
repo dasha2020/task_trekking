@@ -75,7 +75,7 @@ h2 {
     margin-right: 50px;
 }
 
-.rect {
+.task {
     width: 350px;
     height: 250px;
     position: relative;
@@ -154,6 +154,13 @@ h2 {
     margin-top: 50px;
     font-family: 'Hanken Grotesk', sans-serif;
 
+}
+
+.filter_status label {
+    font-family: 'Hanken Grotesk', sans-serif;
+    color: #ccc;
+    margin-right: 5px;
+    margin-left: 5px;
 }
 
 

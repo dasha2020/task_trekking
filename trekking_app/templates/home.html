@@ -15,17 +15,24 @@
     </div>
     <form method="get" action="{% url 'filter' %}" class="filter_status" novalidate>
         {% csrf_token %}
+        <label>Status: </label>
         <select name="status" id="status">
-            <option value="">All</option>
+            <option value="All">All</option>
             <option value="done">Done</option>
             <option value="in_progress">In Progress</option>
             <option value="not_done">Not Done</option>
+        </select>
+        <label>Priority: </label>
+        <select name="priority" id="priority">
+            <option value="All">All</option>
+            <option value="urgent">Urgent</option>
+            <option value="not_urgent">Not Urgent</option>
         </select>
         <button type="submit">Filter</button>
         
     </form>
     {% for task in tasks %}
-    <div class="rect">
+    <div class="task">
         <h2>{{task.title}}</h2>
         <p>{{task.description}}</p>
         <div class="priority">{{task.get_priority_display }}</div>
