@@ -5,6 +5,6 @@ from .views import *
 urlpatterns = [
     path('home/', ViewAllTasks.as_view(), name='home'),
     path('home/', ViewAllTasks.as_view(), name='filter'),
-    path('home/', TaskFormView.as_view(), name='add_task'),
+    path('add_task/', TaskFormView.as_view(), name='add_task'),
     path('edit_task/<int:task_id>/', TaskFormView.as_view(), name='edit_task'),
 ]

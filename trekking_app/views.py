@@ -54,10 +54,11 @@ class TaskFormView(FormView):
     
     def post(self, request, *args, **kwargs):
         if 'cancel' in request.POST:
-            tasks = Task.objects.all()
-            context = self.get_context_data(tasks=tasks, popup=False)
-            context["css_file"] = 'styles.css'
-            return render(request, 'home.html', context)
+            #tasks = Task.objects.all()
+            #context = self.get_context_data(tasks=tasks, popup=False)
+            #context["css_file"] = 'styles.css'
+            #return render(request, 'home.html', context)
+            return redirect("home")
 
         return super().post(request, *args, **kwargs)
 
@@ -78,10 +79,11 @@ class TaskFormView(FormView):
         else:
             Task.objects.create(title=title, description=description, status=status, priority=priority, deadline=deadline)
 
-        tasks = Task.objects.all()
-        context = self.get_context_data(tasks=tasks, popup=False)
-        context["css_file"] = 'styles.css'
-        return render(self.request, 'home.html', context)
+        #tasks = Task.objects.all()
+        #context = self.get_context_data(tasks=tasks, popup=False)
+        #context["css_file"] = 'styles.css'
+        #return render(self.request, 'home.html', context)
+        return redirect("home")
 
 
 class ViewAllTasks(View):
