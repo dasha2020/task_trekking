@@ -41,42 +41,63 @@ class TaskFormView(FormView):
     
     def get(self, request, *args, **kwargs):
         tasks = Task.objects.all()
-        context = self.get_context_data(tasks=tasks, popup=True)
+        #context = self.get_context_data(tasks=tasks, popup=True)
+        view_name = request.resolver_match.view_name
 
-        if self.task:
+        if self.task and view_name == 'edit_task':
             form = TaskForm(initial=self.get_initial())
-        else:
+            context = self.get_context_data(task=self.task, tasks=tasks, form=form, popup=True)
+        elif self.task and view_name == 'delete_task':
+            print("DEBUG: Deleting task")
+            context = self.get_context_data(tasks=tasks, popup_delete=True)
+        elif view_name == 'add_task':
+            print("DEBUG: Adding task")
             form = TaskForm()
+            context = self.get_context_data(task=self.task, tasks=tasks, form=form, popup=True)
+        else:
+            context = self.get_context_data(tasks=tasks)
 
-        context = self.get_context_data(task=self.task, form=form, popup=True)
+        
         context["css_file"] = 'styles.css'
         return render(request, "home.html", context)
     
     def post(self, request, *args, **kwargs):
-        if 'cancel' in request.POST:
+        if 'cancel' in request.POST or 'cancel_delete' in request.POST:
             #tasks = Task.objects.all()
             #context = self.get_context_data(tasks=tasks, popup=False)
             #context["css_file"] = 'styles.css'
             #return render(request, 'home.html', context)
             return redirect("home")
+        if 'delete' in request.POST:
+            self.action = "delete"
+            self.task.delete()
+            return redirect("home")
+        if 'save' in request.POST:
+            self.action = "edit"
+        if 'add' in request.POST:
+            self.action = "add"
 
         return super().post(request, *args, **kwargs)
 
     def form_valid(self, form):
-        title = form.cleaned_data['title']
-        description = form.cleaned_data['description']
-        status = form.cleaned_data['status']
-        priority = form.cleaned_data['priority']
-        deadline = form.cleaned_data['deadline']
+        if self.action == "add" or self.action == "edit":
+            title = form.cleaned_data['title']
+            description = form.cleaned_data['description']
+            status = form.cleaned_data['status']
+            priority = form.cleaned_data['priority']
+            deadline = form.cleaned_data['deadline']
 
-        if self.task:
+        if self.task and self.action == "edit":
             self.task.title = title
             self.task.description = description
             self.task.status = status
             self.task.priority = priority
             self.task.deadline = deadline
             self.task.save()
-        else:
+        elif self.task and self.action == "delete":
+            self.task.delete()
+            return redirect("home")
+        elif self.action == "add":
             Task.objects.create(title=title, description=description, status=status, priority=priority, deadline=deadline)
 
         #tasks = Task.objects.all()
@@ -98,79 +119,26 @@ class ViewAllTasks(View):
             tasks = Task.objects.all()
             status = request.GET.get('status')
             priority = request.GET.get('priority')
-            #if status:
-                #if status != "All":
-                    #tasks = tasks.filter(status=status)
-                    #context = self.get_context_data(tasks=tasks)
-                #else:
-                    #context = self.get_context_data(tasks=tasks)
-            #if priority:
-                #if priority != "All":
-                    #tasks = tasks.filter(priority=priority)
-                    #context = self.get_context_data(tasks=tasks)
-                #else:
-                    #context = self.get_context_data(tasks=tasks)
-            if status == "All" and priority == "All":
-                context = self.get_context_data(tasks=tasks)
-                return render(request, 'home.html', context)
-            elif status != "All" and priority == "All":
-                tasks = tasks.filter(status=status)
-                context = self.get_context_data(tasks=tasks)
-                return render(request, 'home.html', context)
-            elif status == "All" and priority != "All":
-                tasks = tasks.filter(priority=priority)
-                context = self.get_context_data(tasks=tasks)
-                return render(request, 'home.html', context)
+            if status or priority:
+                if status == "All" and priority == "All":
+                    context = self.get_context_data(tasks=tasks)
+                    return render(request, 'home.html', context)
+                elif status != "All" and priority == "All":
+                    tasks = tasks.filter(status=status)
+                    context = self.get_context_data(tasks=tasks)
+                    return render(request, 'home.html', context)
+                elif status == "All" and priority != "All":
+                    tasks = tasks.filter(priority=priority)
+                    context = self.get_context_data(tasks=tasks)
+                    return render(request, 'home.html', context)
+                elif status != "All" and priority != "All":
+                    tasks = tasks.filter(priority=priority)
+                    tasks = tasks.filter(status=status)
+                    context = self.get_context_data(tasks=tasks)
+                    return render(request, 'home.html', context)
 
         tasks = Task.objects.all()
         context = self.get_context_data(tasks=tasks)
         return render(request, 'home.html', context)
-    def post(self, request, task_id=None):
-        if request.path == reverse('add_task'):
-            title = request.POST.get('title')
-            description = request.POST.get('description')
-            status = request.POST.get('status')
-            priority = request.POST.get('priority')
-            deadline = request.POST.get('deadline')
-
-            task = Task(title=title, description=description, status=status, priority=priority, deadline=deadline)
-
-            try:
-                task.save()
-                messages.success(request, 'Task created successfully!')
-            except IntegrityError as e:
-                messages.error(request, f"Error: {str(e)}")
-
-            tasks = Task.objects.all()
-            context = self.get_context_data(tasks=tasks)
-            return render(request, 'home.html', context)
-        
-        elif task_id:
-            if request.path == reverse('edit_task', kwargs={'task_id': task_id}):
-                return self.update(request, task_id)
     
-    def update(self, request, task_id):
-        task = Task.objects.get(id=task_id)
-
-        if request.method == 'POST':
-            if 'cancel' in request.POST:
-                tasks = Task.objects.all()
-                context = self.get_context_data(tasks=tasks, popup=False)
-                return render(request, 'home.html', context)
-                
-            if 'save' in request.POST:
-                task.title = request.POST.get('title')
-                task.description = request.POST.get('description')
-                task.status = request.POST.get('status')
-                task.priority = request.POST.get('priority')
-                task.deadline = request.POST.get('deadline')
-                task.save()
-
-                tasks = Task.objects.all()
-                context = self.get_context_data(tasks=tasks, popup=False)
-                return render(request, 'home.html', context)
-
-
-        context = self.get_context_data(task=task, popup=True)
-        return render(request, 'home.html', context)
 

@@ -112,6 +112,14 @@ h2 {
     margin-left: 50px;
     margin-top: 55px;
 }
+
+.description {
+    width: 300px;
+    height: 95px;
+    padding: 5px;
+    font-family: 'Hanken Grotesk', sans-serif;
+    overflow: auto;
+}
   
 .priority {
     width: 105px;
@@ -157,7 +165,7 @@ h2 {
 .status {
     width: 105px;
     height: 35px;
-    background: rgb(94, 102, 209);
+    background: rgb(128, 135, 230);
     position: absolute;
     right: 0; 
     top: 35px;
@@ -190,6 +198,32 @@ h2 {
 
 .openpopup:hover {
     background-color: rgb(184, 66, 37);
+}
+
+.delete {
+    width: 35px;
+    height: 35px;
+    background: rgb(163, 163, 163);
+    position: absolute;
+    left: 0; 
+    top: 0;
+    z-index: 0;
+    border: rgb(51, 132, 255);
+    color: #111111;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    font-size: 21px;
+
+}
+
+.delete:hover {
+    background-color: rgb(184, 66, 37);
+}
+
+.title {
+    margin-top: 23px;
 }
 
 .button {
@@ -240,6 +274,21 @@ h2 {
 
 #detailed_task_dialog {
     display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 30px;
+    width: 500px;
+    max-width: 90%;
+    border-radius: 8px;
+    z-index: 1000;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.delete_popup {
+    display: block;
     position: fixed;
     top: 50%;
     left: 50%;

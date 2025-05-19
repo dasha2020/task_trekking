@@ -64,7 +64,7 @@
                     {% endif %}
                 </div>
 
-            <button type="submit" class="add_btn">Add Task</button>
+            <button type="submit" class="add_btn" name="add" value="add">Add Task</button>
             </div>
         </form>
         <button onclick="close_popup()" class="close_btn">
@@ -92,9 +92,21 @@
     <div class="task_div">
     {% for task in tasks %}
     <div class="task">
-        <h2>{{task.title}}</h2>
+        <a href="{% url 'delete_task' task_id=task.id %}" class="delete"><i class="las la-trash"></i></a>
+        {% if popup_delete %}
+        <div class="delete_popup">
+            <h2>Are you sure you want to delete this task?</h2>
+            <p>By deleting this task you lose all information about it.</p>
+            <form method="post" novalidate>
+                {% csrf_token %}
+                <button type="submit" class="add_btn" name='delete' value='delete'>Delete</button>
+                <button type="submit" class="close_btn" name='cancel_delete' value='cancel_delete'>Close</button>
+            </form>
+        </div>
+        {% endif %}
+        <h2 class="title">{{task.title}}</h2>
         <br>
-        <p>{{task.description}}</p>
+        <div class="description">{{task.description}}</div>
         <div class="priority">{{task.get_priority_display }}</div>
         <div class="created_at" onclick="open_date(this)">{{ task.created_at|date:"F j" }}</div>
         <div class="date" onclick="close_date(this)">{{ task.created_at }}</div>
