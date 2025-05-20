@@ -20,7 +20,7 @@ class Task(models.Model):
     priority = models.CharField(max_length=15, choices=priorities, default='not_urgent')
     created_at = models.DateTimeField(auto_now_add=True)
     deadline = models.DateTimeField(null=True)
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
 class Comment(models.Model):
     text = models.TextField()
