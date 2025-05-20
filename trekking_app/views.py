@@ -13,6 +13,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from .forms import TaskForm, CustomUserCreationForm, LoginForm
+from collections import defaultdict
 
 # Create your views here.
 
@@ -118,6 +119,7 @@ class ViewAllTasks(LoginRequiredMixin, View):
         user = request.user
         if request.path == reverse('filter'):
             tasks = Task.objects.all()
+            tasks = tasks.filter(user=user)
             status = request.GET.get('status')
             priority = request.GET.get('priority')
             if status or priority:
@@ -143,6 +145,26 @@ class ViewAllTasks(LoginRequiredMixin, View):
         context = self.get_context_data(tasks=tasks)
         return render(request, 'home.html', context)
 
+
+class ViewAllBoards(LoginRequiredMixin, View):
+    def get_context_data(self, **kwargs):
+        context = kwargs
+        context["css_file"] = 'styles.css'
+        return context
+    
+    def get(self, request, user_id=None):
+        tasks = Task.objects.select_related('user')
+    
+        #sorted_tasks = defaultdict(list)
+        #for task in tasks:
+            #sorted_tasks[task.user].append(task)
+        user_list = list({task.user for task in tasks})
+        print(user_list)
+        context = self.get_context_data(user_list=user_list)
+        return render(request, 'boards.html', context)
+
+
+#<a href="{% url 'look_into_board' user_id=user.id %}" class="openpopup">More</a>
 class LoginView(FormView):
     template_name = 'login.html'
     form_class = LoginForm

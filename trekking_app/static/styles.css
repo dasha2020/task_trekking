@@ -200,6 +200,32 @@ h2 {
     background-color: rgb(184, 66, 37);
 }
 
+.openboard {
+    width: 348px;
+    height: 55px;
+    background: rgb(255, 92, 51);
+    position: absolute;
+    left: 0; 
+    bottom: 0;
+    z-index: 0;
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    border: rgb(51, 132, 255);
+    color: #111111;
+
+    display: inline-block;
+    padding: 15px 20px;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+
+}
+
+.openboard:hover {
+    background-color: rgb(184, 66, 37);
+}
+
 .delete {
     width: 35px;
     height: 35px;
