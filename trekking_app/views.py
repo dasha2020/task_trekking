@@ -138,9 +138,9 @@ class ViewTaskBoard(LoginRequiredMixin, FormView):
 
         if self.task and view_name == 'detailed_task':
             form = TaskForm(initial=self.get_initial())
-            context = self.get_context_data(task=self.task, tasks=tasks, form=form, popup=True, username=self.user.username)
+            context = self.get_context_data(task=self.task, tasks=tasks, form=form, popup=True, username=self.user.username, user_id=self.user.id)
         else:
-            context = self.get_context_data(tasks=tasks, username=self.user.username)
+            context = self.get_context_data(tasks=tasks, username=self.user.username, user_id=self.user.id)
 
         
         context["css_file"] = 'styles.css'

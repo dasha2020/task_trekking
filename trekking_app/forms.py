@@ -45,6 +45,18 @@ class TaskForm(forms.Form):
         })
     )
 
+class CommentForm(forms.Form):
+    text = forms.CharField(
+        label="Comment",
+        max_length=500,
+        required=True,
+        widget=forms.Textarea(attrs={
+            'class': 'form-control',
+            'placeholder': 'Write your comment here...',
+            'rows': 3
+        })
+    )
+
 class TaskAnotherUserForm(forms.Form):
     title = forms.CharField(
         label="Title",
