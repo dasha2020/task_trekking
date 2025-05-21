@@ -40,7 +40,7 @@
         
     </div>
     <h1>{{ username }}'s Board</h1>
-    <form method="get" action="{% url 'filter' %}" class="filter_status" novalidate>
+    <form method="get" class="filter_status" novalidate>
         {% csrf_token %}
         <label>Status: </label>
         <select name="status" id="status">
@@ -55,7 +55,8 @@
             <option value="urgent">Urgent</option>
             <option value="not_urgent">Not Urgent</option>
         </select>
-        <button type="submit">Filter</button>
+        <button type="submit" class="filter">Filter</button>
+        <a href="{% url 'look_into_board' user_id %}" class="filter_reset">Reset Filters</a>
         
     </form>
     <div class="task_div">

@@ -223,16 +223,36 @@ class ViewUserBoard(LoginRequiredMixin, View):
     def get(self, request, user_id=None):
         self.user_id = user_id
         tasks = []
-        another_user = None
+        self.another_user = None
         if self.user_id:
-            another_user = User.objects.get(id=self.user_id)
-            print(another_user)
+            self.another_user = User.objects.get(id=self.user_id)
+            print(self.another_user)
             tasks = Task.objects.filter(user_id=self.user_id)
-            user = request.user
+        
+        status = request.GET.get('status')
+        priority = request.GET.get('priority')
 
-            context = self.get_context_data(tasks=tasks, username=another_user.username)
-            return render(request, 'another_user_board.html', context)
-        context = self.get_context_data(tasks=tasks)
+        if status or priority: 
+            if status == "All" and priority == "All":
+                context = self.get_context_data(tasks=tasks, username=self.another_user.username, user_id=self.user_id)
+                return render(request, 'another_user_board.html', context)
+            elif status != "All" and priority == "All":
+                tasks = tasks.filter(status=status)
+                context = self.get_context_data(tasks=tasks, username=self.another_user.username, user_id=self.user_id)
+                return render(request, 'another_user_board.html', context)
+            elif status == "All" and priority != "All":
+                tasks = tasks.filter(priority=priority)
+                context = self.get_context_data(tasks=tasks, username=self.another_user.username, user_id=self.user_id)
+                return render(request, 'another_user_board.html', context)
+            elif status != "All" and priority != "All":
+                tasks = tasks.filter(priority=priority)
+                tasks = tasks.filter(status=status)
+                context = self.get_context_data(tasks=tasks, username=self.another_user.username, user_id=self.user_id)
+                return render(request, 'another_user_board.html', context)
+
+            
+
+        context = self.get_context_data(tasks=tasks, username=self.another_user.username, user_id=self.user_id)
         return render(request, 'another_user_board.html', context)
 
 
