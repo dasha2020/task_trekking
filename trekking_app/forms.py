@@ -12,7 +12,6 @@ class TaskForm(forms.Form):
         widget=forms.TextInput(attrs={
             'class': 'form-control',
             'placeholder': 'New Title',
-            'autofocus': 'autofocus',
         })
     )
 
@@ -43,6 +42,43 @@ class TaskForm(forms.Form):
         widget=forms.DateTimeInput(attrs={
             'class': 'form-control',
             'type': 'datetime-local'
+        })
+    )
+
+class TaskAnotherUserForm(forms.Form):
+    title = forms.CharField(
+        label="Title",
+        max_length=100,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'readonly': 'readonly',
+        })
+    )
+
+    description = forms.CharField(
+        label="Description",
+        max_length=300,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'readonly': 'readonly',
+        })
+    )
+
+    status = forms.ChoiceField(
+        choices=Task.statuses,
+        widget=forms.Select(attrs={'class': 'form-control', 'readonly': 'readonly',}),
+    )
+
+    priority = forms.ChoiceField(
+        choices=Task.priorities,
+        widget=forms.Select(attrs={'class': 'form-control', 'readonly': 'readonly',}),
+    )
+
+    deadline = forms.DateTimeField(
+        widget=forms.DateTimeInput(attrs={
+            'class': 'form-control',
+            'type': 'datetime-local',
+            'readonly': 'readonly',
         })
     )
 

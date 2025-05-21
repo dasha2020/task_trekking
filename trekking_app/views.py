@@ -12,7 +12,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
-from .forms import TaskForm, CustomUserCreationForm, LoginForm
+from .forms import TaskForm, CustomUserCreationForm, LoginForm, TaskAnotherUserForm
 from collections import defaultdict
 
 # Create your views here.
@@ -107,6 +107,51 @@ class TaskFormView(LoginRequiredMixin, FormView):
         #return render(self.request, 'home.html', context)
         return redirect("home")
 
+class ViewTaskBoard(LoginRequiredMixin, FormView):
+    form_class = TaskAnotherUserForm
+    success_url = "/look_into_board/"
+    template_name = "another_user_board.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        self.task_id = kwargs.get('task_id')
+        self.task = None
+        if self.task_id:
+            self.task = Task.objects.get(id=self.task_id)
+            self.user = self.task.user
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_initial(self):
+        if self.task:
+            return {
+                'title': self.task.title,
+                'description': self.task.description,
+                'status': self.task.status,
+                'priority': self.task.priority,
+                'deadline': self.task.deadline,
+            }
+        return super().get_initial()
+    
+    def get(self, request, *args, **kwargs):
+        tasks = Task.objects.filter(user_id=self.user.id)
+        #context = self.get_context_data(tasks=tasks, popup=True)
+        view_name = request.resolver_match.view_name
+
+        if self.task and view_name == 'detailed_task':
+            form = TaskForm(initial=self.get_initial())
+            context = self.get_context_data(task=self.task, tasks=tasks, form=form, popup=True, username=self.user.username)
+        else:
+            context = self.get_context_data(tasks=tasks, username=self.user.username)
+
+        
+        context["css_file"] = 'styles.css'
+        return render(request, "another_user_board.html", context)
+    
+    def post(self, request, *args, **kwargs):
+        if 'cancel' in request.POST:
+            return redirect("look_into_board", user_id=self.user.id)
+
+        return super().post(request, *args, **kwargs)
+
 
 class ViewAllTasks(LoginRequiredMixin, View):
     def get_context_data(self, **kwargs):
@@ -176,13 +221,18 @@ class ViewUserBoard(LoginRequiredMixin, View):
         return context
     
     def get(self, request, user_id=None):
-        self.user_id = request.get('user_id')
+        self.user_id = user_id
+        tasks = []
+        another_user = None
         if self.user_id:
             another_user = User.objects.get(id=self.user_id)
+            print(another_user)
             tasks = Task.objects.filter(user_id=self.user_id)
-        user = request.user
+            user = request.user
 
-        context = self.get_context_data(tasks=tasks, username=another_user.username)
+            context = self.get_context_data(tasks=tasks, username=another_user.username)
+            return render(request, 'another_user_board.html', context)
+        context = self.get_context_data(tasks=tasks)
         return render(request, 'another_user_board.html', context)
 
 

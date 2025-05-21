@@ -34,9 +34,30 @@ h2 {
     font-size: 25px;
 }
 
+.h2_white {
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-weight: 700;
+    color: #f0f0f0;
+    font-size: 25px;
+}
+
 .center_div {
     margin: 0 auto;
     max-width: 800px;
+}
+
+.label {
+    color: #dbdbdb!important; /* Your desired color */
+}
+
+.register {
+    display: flex; 
+    flex-direction: column;
+    margin-left: 300px;
+    margin-right: 100px;
+    margin-top: 50px;
+    margin-bottom: 55px;
+    width: 50%;
 }
 
 .horizontal {

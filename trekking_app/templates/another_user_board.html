@@ -69,66 +69,66 @@
         <div class="date" onclick="close_date(this)">{{ task.created_at }}</div>
         <div class="deadline">{{task.deadline|date:"F j H:i"}}</div>
         <div class="status">{{task.get_status_display}}</div>
-        <button onclick="open_detailed_task(this)" class="openpopup">More...</a>
+        <a href="{% url 'detailed_task' task_id=task.id %}" class="openpopup">More...</a>
     </div>
     {% endfor %}
     </div>
-    <div id="overlay1" style="display: none;"></div>
-    <div id="detailed_task_dialog" style="display: none;">
-        <div style="pointer-events: none;">
+    {% if popup %}
+    <div id="overlay1" style="display: block;"></div>
+    <div id="detailed_task_dialog" style="display: block;">
         <h2>Info about Task</h2>
-        <form novalidate>
+
+        <form method="post" novalidate>
             {% csrf_token %}
-            <div class="vertical_form">
-                <div class="mb-3">
-                    <div>{{ form.title.label_tag }}</div>
-                    {{ form.title }}
+                <div class="vertical_form" style="pointer-events: none;">
+                    <div class="mb-3">
+                        <div>{{ form.title.label_tag }}</div>
+                        {{ form.title }}
 
-                    {% if form.title.errors %}
-                        <div class="text-danger">{{ form.title.errors }}</div>
-                    {% endif %}
-                </div>
-                <div class="mb-3">
-                    <div>{{ form.description.label_tag }}</div>
-                    {{ form.description }}
+                        {% if form.title.errors %}
+                            <div class="text-danger">{{ form.title.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <div>{{ form.description.label_tag }}</div>
+                        {{ form.description }}
 
-                    {% if form.description.errors %}
-                        <div class="text-danger">{{ form.description.errors }}</div>
-                    {% endif %}
-                </div>
-                <div class="mb-3">
-                    <div>{{ form.status.label_tag }}</div>
-                    {{ form.status }}
+                        {% if form.description.errors %}
+                            <div class="text-danger">{{ form.description.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <div>{{ form.status.label_tag }}</div>
+                        {{ form.status }}
 
-                    {% if form.status.errors %}
-                        <div class="text-danger">{{ form.status.errors }}</div>
-                    {% endif %}
-                </div>
-                <div class="mb-3">
-                    <div>{{ form.priority.label_tag }}</div>
-                    {{ form.priority }}
+                        {% if form.status.errors %}
+                            <div class="text-danger">{{ form.status.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <div>{{ form.priority.label_tag }}</div>
+                        {{ form.priority }}
 
-                    {% if form.priority.errors %}
-                        <div class="text-danger">{{ form.priority.errors }}</div>
-                    {% endif %}
-                </div>
-                <div class="mb-3">
-                    <div>{{ form.deadline.label_tag }}</div>
-                    {{ form.deadline }}
+                        {% if form.priority.errors %}
+                            <div class="text-danger">{{ form.priority.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <div>{{ form.deadline.label_tag }}</div>
+                        {{ form.deadline }}
 
-                    {% if form.deadline.errors %}
-                        <div class="text-danger">{{ form.deadline.errors }}</div>
-                    {% endif %}
+                        {% if form.deadline.errors %}
+                            <div class="text-danger">{{ form.deadline.errors }}</div>
+                        {% endif %}
+                    </div>
                 </div>
-            
-            </div>
+            <button type="submit" name='cancel' value='cancel' class="close_btn">
+                Close
+            </button>
         </form>
-        <button onclick="close_detailed_task(this)" class="close_btn">
-            Close
-        </button>
-        </div>
         
     </div>
+    {% endif %}
     
     <script>
         function open_date(element) {
