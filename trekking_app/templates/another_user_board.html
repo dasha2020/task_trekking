@@ -19,10 +19,10 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+                <a class="nav-link" aria-current="page" href="{% url 'home' %}">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="{% url 'boards' %}">Other Boards</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'boards' %}">Other Boards</a>
               </li>
             </ul>
               <div class="d-flex">
@@ -39,64 +39,7 @@
     <div class="center_div">
         
     </div>
-    <h1>List of our tasks</h1>
-    <button onclick="add_task()" class="add_task">
-        Add task
-    </button>
-    <div id="overlay"></div>
-    <div id="add_task_dialog">
-        <h2>Add Task</h2>
-        <form method="post" action="{% url 'add_task' %}" novalidate>
-            {% csrf_token %}
-            <div class="vertical_form">
-                <div class="mb-3">
-                    <div>{{ form.title.label_tag }}</div>
-                    {{ form.title }}
-
-                    {% if form.title.errors %}
-                        <div class="text-danger">{{ form.title.errors }}</div>
-                    {% endif %}
-                </div>
-                <div class="mb-3">
-                    <div>{{ form.description.label_tag }}</div>
-                    {{ form.description }}
-
-                    {% if form.description.errors %}
-                        <div class="text-danger">{{ form.description.errors }}</div>
-                    {% endif %}
-                </div>
-                <div class="mb-3">
-                    <div>{{ form.status.label_tag }}</div>
-                    {{ form.status }}
-
-                    {% if form.status.errors %}
-                        <div class="text-danger">{{ form.status.errors }}</div>
-                    {% endif %}
-                </div>
-                <div class="mb-3">
-                    <div>{{ form.priority.label_tag }}</div>
-                    {{ form.priority }}
-
-                    {% if form.priority.errors %}
-                        <div class="text-danger">{{ form.priority.errors }}</div>
-                    {% endif %}
-                </div>
-                <div class="mb-3">
-                    <div>{{ form.deadline.label_tag }}</div>
-                    {{ form.deadline }}
-
-                    {% if form.deadline.errors %}
-                        <div class="text-danger">{{ form.deadline.errors }}</div>
-                    {% endif %}
-                </div>
-
-            <button type="submit" class="add_btn" name="add" value="add">Add Task</button>
-            </div>
-        </form>
-        <button onclick="close_popup()" class="close_btn">
-            Close
-        </button>
-    </div>
+    <h1>{{ username }}'s Board</h1>
     <form method="get" action="{% url 'filter' %}" class="filter_status" novalidate>
         {% csrf_token %}
         <label>Status: </label>
@@ -118,18 +61,6 @@
     <div class="task_div">
     {% for task in tasks %}
     <div class="task">
-        <a href="{% url 'delete_task' task_id=task.id %}" class="delete"><i class="las la-trash"></i></a>
-        {% if popup_delete %}
-        <div class="delete_popup">
-            <h2>Are you sure you want to delete this task?</h2>
-            <p>By deleting this task you lose all information about it.</p>
-            <form method="post" novalidate>
-                {% csrf_token %}
-                <button type="submit" class="add_btn" name='delete' value='delete'>Delete</button>
-                <button type="submit" class="close_btn" name='cancel_delete' value='cancel_delete'>Close</button>
-            </form>
-        </div>
-        {% endif %}
         <h2 class="title">{{task.title}}</h2>
         <br>
         <div class="description">{{task.description}}</div>
@@ -138,15 +69,15 @@
         <div class="date" onclick="close_date(this)">{{ task.created_at }}</div>
         <div class="deadline">{{task.deadline|date:"F j H:i"}}</div>
         <div class="status">{{task.get_status_display}}</div>
-        <a href="{% url 'edit_task' task_id=task.id %}" class="openpopup">More...</a>
+        <button onclick="open_detailed_task(this)" class="openpopup">More...</a>
     </div>
     {% endfor %}
     </div>
-    {% if popup %}
-    <div id="overlay1" style="display: block;"></div>
-    <div id="detailed_task_dialog" style="display: block;">
-        <h2>Edit Task</h2>
-        <form method="post" novalidate>
+    <div id="overlay1" style="display: none;"></div>
+    <div id="detailed_task_dialog" style="display: none;">
+        <div style="pointer-events: none;">
+        <h2>Info about Task</h2>
+        <form novalidate>
             {% csrf_token %}
             <div class="vertical_form">
                 <div class="mb-3">
@@ -189,34 +120,17 @@
                         <div class="text-danger">{{ form.deadline.errors }}</div>
                     {% endif %}
                 </div>
-
-            <button type="submit" class="add_btn" name='save' value='save'>Save</button>
-            <button type="submit" class="add_btn" name='cancel' value='cancel' class="close_btn">
-                Close
-            </button>
+            
             </div>
         </form>
+        <button onclick="close_detailed_task(this)" class="close_btn">
+            Close
+        </button>
+        </div>
         
     </div>
-    {% endif %}
     
     <script>
-        function add_task() {
-            document.getElementById(
-                "overlay"
-            ).style.display = "block";
-            document.getElementById(
-                "add_task_dialog"
-            ).style.display = "block";
-        }
-        function close_popup() {
-            document.getElementById(
-                "overlay"
-            ).style.display = "none";
-            document.getElementById(
-                "add_task_dialog"
-            ).style.display = "none";
-        }
         function open_date(element) {
             const fullDate = element.nextElementSibling;
             fullDate.style.display = 'block';
@@ -224,6 +138,22 @@
 
         function close_date(element) {
             element.style.display = 'none';
+        }
+        function open_detailed_task() {
+            document.getElementById(
+                "overlay1"
+            ).style.display = "block";
+            document.getElementById(
+                "detailed_task_dialog"
+            ).style.display = "block";
+        }
+        function close_detailed_task() {
+            document.getElementById(
+                "overlay1"
+            ).style.display = "none";
+            document.getElementById(
+                "detailed_task_dialog"
+            ).style.display = "none";
         }
     </script>
         

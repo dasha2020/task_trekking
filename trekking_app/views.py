@@ -154,14 +154,36 @@ class ViewAllBoards(LoginRequiredMixin, View):
     
     def get(self, request, user_id=None):
         tasks = Task.objects.select_related('user')
+        user = request.user
     
         #sorted_tasks = defaultdict(list)
         #for task in tasks:
             #sorted_tasks[task.user].append(task)
-        user_list = list({task.user for task in tasks})
+        user_list = []
+        for task in tasks: 
+            if task.user != user:
+                user_list.append(task.user)
+
+        #user_list = list({task.user for task in tasks})
         print(user_list)
         context = self.get_context_data(user_list=user_list)
         return render(request, 'boards.html', context)
+
+class ViewUserBoard(LoginRequiredMixin, View):
+    def get_context_data(self, **kwargs):
+        context = kwargs
+        context["css_file"] = 'styles.css'
+        return context
+    
+    def get(self, request, user_id=None):
+        self.user_id = request.get('user_id')
+        if self.user_id:
+            another_user = User.objects.get(id=self.user_id)
+            tasks = Task.objects.filter(user_id=self.user_id)
+        user = request.user
+
+        context = self.get_context_data(tasks=tasks, username=another_user.username)
+        return render(request, 'another_user_board.html', context)
 
 
 #<a href="{% url 'look_into_board' user_id=user.id %}" class="openpopup">More</a>

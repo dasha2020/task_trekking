@@ -9,6 +9,7 @@ urlpatterns = [
     path('edit_task/<int:task_id>/', TaskFormView.as_view(), name='edit_task'),
     path('delete_task/<int:task_id>/', TaskFormView.as_view(), name='delete_task'),
     path('boards/', ViewAllBoards.as_view(), name='boards'),
+    path('look_into_board/<int:user_id>/', ViewUserBoard.as_view(), name='look_into_board'),
     path('accounts/login/', LoginView.as_view(), name='login'),
     path('register/', RegisterView.as_view(), name='register'),
     path('logout/', LogoutView.as_view(), name='logout'),
