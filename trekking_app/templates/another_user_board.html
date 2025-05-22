@@ -143,9 +143,13 @@
         {% if comments != "No comments" %}
         {% for comment in comments %}
             <div class="comments">
-                <strong>{{ comment.user.username }}</strong>
+                <div class="horizontal_date_name"><strong>{{ comment.user.username }}</strong>
+                {% if comment.id in task_author %}
+                <p>Author</p>
+                {% endif %}
+                <p>{{ comment.date }}</p></div>
                 <p>{{ comment.text }}</p>
-                <p>{{ comment.date }}</p>
+                
             </div>
         {% endfor %}
         {% endif %}

@@ -142,7 +142,12 @@ class ViewTaskBoard(LoginRequiredMixin, FormView):
 
         if self.task and view_name == 'detailed_task':
             form = TaskForm(initial=self.get_initial())
-            context = self.get_context_data(task=self.task, tasks=tasks, form=form, popup=True, username=self.user.username, user_id=self.user.id, comment=comment, comments=comments)
+            task_author = []
+            for c in comments:
+                if c.user == self.user:
+                    task_author.append(c.id)
+
+            context = self.get_context_data(task=self.task, tasks=tasks, form=form, popup=True, username=self.user.username, user_id=self.user.id, comment=comment, comments=comments, task_author=task_author)
         else:
             context = self.get_context_data(tasks=tasks, form=form, popup=True, username=self.user.username, user_id=self.user.id, comment=comment)
 

@@ -3,7 +3,7 @@
 <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
 <div class="register">
 <h1 class="h2_white">Log in</h1>
-<form method="POST">
+<form method="POST" class="loginform">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit" class="button_new">Log in</button>

@@ -38,12 +38,25 @@ h2 {
     font-family: 'Hanken Grotesk', sans-serif;
     font-weight: 700;
     color: #f0f0f0;
-    font-size: 25px;
 }
 
 .center_div {
     margin: 0 auto;
     max-width: 800px;
+}
+
+.loginform label {
+    color: #ccc;
+}
+
+.horizontal_date_name {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.horizontal_date_name p {
+    margin: 0;
+    size: 16px;
 }
 
 .label {
