@@ -47,7 +47,7 @@ class TaskForm(forms.Form):
 
 class CommentForm(forms.Form):
     text = forms.CharField(
-        label="Comment",
+        label="Add your comment",
         max_length=500,
         required=True,
         widget=forms.Textarea(attrs={

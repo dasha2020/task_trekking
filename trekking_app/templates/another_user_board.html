@@ -56,7 +56,7 @@
             <option value="not_urgent">Not Urgent</option>
         </select>
         <button type="submit" class="filter">Filter</button>
-        <a href="{% url 'look_into_board' user_id %}" class="filter_reset">Reset Filters</a>
+        <button type="submit" name="reset_filter" class="filter_reset">Reset Filters</button>
         
     </form>
     <div class="task_div">
@@ -127,6 +127,32 @@
                 Close
             </button>
         </form>
+        <form method="post" class="comment" novalidate>
+            {% csrf_token %}
+            <div class="mb-3">
+                {{ comment.text.label_tag }}
+                {{ comment.text }}
+                {% if comment.text.errors %}
+                    <div class="text-danger">{{ comment.text.errors }}</div>
+                {% endif %}
+            </div>
+            <button type="submit" name="comment_added" class="btn btn-primary">Add Comment</button>
+        </form>
+        <hr>
+        <h2>Comments</h2>
+        {% if comments != "No comments" %}
+        {% for comment in comments %}
+            <div class="comments">
+                <strong>{{ comment.user.username }}</strong>
+                <p>{{ comment.text }}</p>
+                <p>{{ comment.date }}</p>
+            </div>
+        {% endfor %}
+        {% endif %}
+        {% if comments == "No comments" %}
+            <p>No comments yet. Be the first to comment.</p>
+        {% endif %}
+        
         
     </div>
     {% endif %}

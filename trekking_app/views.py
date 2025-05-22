@@ -12,7 +12,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
-from .forms import TaskForm, CustomUserCreationForm, LoginForm, TaskAnotherUserForm
+from .forms import TaskForm, CustomUserCreationForm, LoginForm, TaskAnotherUserForm, CommentForm
 from collections import defaultdict
 
 # Create your views here.
@@ -135,12 +135,16 @@ class ViewTaskBoard(LoginRequiredMixin, FormView):
         tasks = Task.objects.filter(user_id=self.user.id)
         #context = self.get_context_data(tasks=tasks, popup=True)
         view_name = request.resolver_match.view_name
+        comment = CommentForm()
+        comments = Comment.objects.filter(task=self.task)
+        if not comments:
+            comments = "No comments"
 
         if self.task and view_name == 'detailed_task':
             form = TaskForm(initial=self.get_initial())
-            context = self.get_context_data(task=self.task, tasks=tasks, form=form, popup=True, username=self.user.username, user_id=self.user.id)
+            context = self.get_context_data(task=self.task, tasks=tasks, form=form, popup=True, username=self.user.username, user_id=self.user.id, comment=comment, comments=comments)
         else:
-            context = self.get_context_data(tasks=tasks, username=self.user.username, user_id=self.user.id)
+            context = self.get_context_data(tasks=tasks, form=form, popup=True, username=self.user.username, user_id=self.user.id, comment=comment)
 
         
         context["css_file"] = 'styles.css'
@@ -149,6 +153,16 @@ class ViewTaskBoard(LoginRequiredMixin, FormView):
     def post(self, request, *args, **kwargs):
         if 'cancel' in request.POST:
             return redirect("look_into_board", user_id=self.user.id)
+        if self.task and 'comment_added' in request.POST:
+            comment = CommentForm(request.POST)
+            user = request.user
+            if comment.is_valid():
+                Comment.objects.create(
+                    text=comment.cleaned_data['text'],
+                    user=user,
+                    task=self.task
+                )
+                return redirect('detailed_task', task_id = self.task_id)
 
         return super().post(request, *args, **kwargs)
 
@@ -249,6 +263,10 @@ class ViewUserBoard(LoginRequiredMixin, View):
                 tasks = tasks.filter(status=status)
                 context = self.get_context_data(tasks=tasks, username=self.another_user.username, user_id=self.user_id)
                 return render(request, 'another_user_board.html', context)
+        
+        if 'reset_filter' in request.GET:
+            context = self.get_context_data(tasks=tasks, username=self.another_user.username, user_id=self.user_id)
+            return render(request, 'another_user_board.html', context)
 
             
 

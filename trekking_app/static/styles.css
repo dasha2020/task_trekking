@@ -266,6 +266,17 @@ h2 {
     background-color: rgb(40, 104, 199);
 }
 
+.comments {
+    max-height: 55px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+.comment {
+    margin-top: 15px;
+}
+
 .openboard {
     width: 348px;
     height: 55px;
