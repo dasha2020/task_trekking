@@ -136,22 +136,24 @@
                     <div class="text-danger">{{ comment.text.errors }}</div>
                 {% endif %}
             </div>
-            <button type="submit" name="comment_added" class="btn btn-primary">Add Comment</button>
+            <button type="submit" name="comment_added" class="add_btn">Add Comment</button>
         </form>
         <hr>
         <h2>Comments</h2>
         {% if comments != "No comments" %}
+        <div class="comments">
         {% for comment in comments %}
-            <div class="comments">
-                <div class="horizontal_date_name"><strong>{{ comment.user.username }}</strong>
+            
+                <div class="horizontal_date_name"><b>{{ comment.user.username }}</b>
                 {% if comment.id in task_author %}
                 <p>Author</p>
                 {% endif %}
                 <p>{{ comment.date }}</p></div>
                 <p>{{ comment.text }}</p>
                 
-            </div>
+            
         {% endfor %}
+        </div>
         {% endif %}
         {% if comments == "No comments" %}
             <p>No comments yet. Be the first to comment.</p>

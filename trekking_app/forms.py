@@ -52,7 +52,7 @@ class CommentForm(forms.Form):
         required=True,
         widget=forms.Textarea(attrs={
             'class': 'form-control',
-            'placeholder': 'Write your comment here...',
+            'placeholder': 'Comment something...',
             'rows': 3
         })
     )

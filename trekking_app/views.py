@@ -27,6 +27,7 @@ class TaskFormView(LoginRequiredMixin, FormView):
         self.task = None
         if self.task_id:
             self.task = Task.objects.get(id=self.task_id)
+        self.user = request.user
         return super().dispatch(request, *args, **kwargs)
 
     def get_initial(self):
@@ -99,7 +100,7 @@ class TaskFormView(LoginRequiredMixin, FormView):
             self.task.delete()
             return redirect("home")
         elif self.action == "add":
-            Task.objects.create(title=title, description=description, status=status, priority=priority, deadline=deadline)
+            Task.objects.create(title=title, description=description, status=status, priority=priority, deadline=deadline, user=self.user)
 
         #tasks = Task.objects.all()
         #context = self.get_context_data(tasks=tasks, popup=False)
@@ -203,6 +204,9 @@ class ViewAllTasks(LoginRequiredMixin, View):
                     tasks = tasks.filter(status=status)
                     context = self.get_context_data(tasks=tasks)
                     return render(request, 'home.html', context)
+            if 'reset_filter' in request.GET:
+                context = self.get_context_data(tasks=tasks)
+                return render(request, 'home.html', context)
 
         tasks = Task.objects.all()
         tasks = Task.objects.filter(user=user)

@@ -112,7 +112,8 @@
             <option value="urgent">Urgent</option>
             <option value="not_urgent">Not Urgent</option>
         </select>
-        <button type="submit">Filter</button>
+        <button type="submit" class="filter">Filter</button>
+        <button type="submit" name="reset_filter" class="filter_reset">Reset Filters</button>
         
     </form>
     <div class="task_div">
@@ -134,9 +135,9 @@
         <br>
         <div class="description">{{task.description}}</div>
         <div class="priority">{{task.get_priority_display }}</div>
-        <div class="created_at" onclick="open_date(this)">{{ task.created_at|date:"F j" }}</div>
-        <div class="date" onclick="close_date(this)">{{ task.created_at }}</div>
-        <div class="deadline">{{task.deadline|date:"F j H:i"}}</div>
+        <div class="created_at" onclick="open_date(this)">Created: {{ task.created_at|date:"F j" }}</div>
+        <div class="date" onclick="close_date(this)"> Created: {{ task.created_at }}</div>
+        <div class="deadline">Deadline: {{task.deadline|date:"F j H:i"}}</div>
         <div class="status">{{task.get_status_display}}</div>
         <a href="{% url 'edit_task' task_id=task.id %}" class="openpopup">More...</a>
     </div>

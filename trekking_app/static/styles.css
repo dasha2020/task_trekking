@@ -117,6 +117,11 @@ h2 {
     margin-right: 25px;
 }
 
+.vertical_div {
+    display: flex; 
+    flex-direction: column;
+}
+
 .vertical_form label {
     margin-top: 25px;
 }
@@ -168,7 +173,7 @@ h2 {
 }
 
 .created_at {
-    width: 65px;
+    width: 75px;
     height: 55px;
     background: rgb(89, 179, 67);
     position: absolute;
@@ -189,7 +194,7 @@ h2 {
     height: 55px;
     background: rgb(67, 153, 179);
     position: absolute;
-    left: 65px; 
+    left: 75px; 
     bottom: 0;
     z-index: 0;
     padding: 5px;
