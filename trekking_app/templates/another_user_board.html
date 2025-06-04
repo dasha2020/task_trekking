@@ -157,28 +157,31 @@
                 {% endif %}
                 <p>{{ comment.date }}</p></div>
                 <p>{{ comment.text }}</p>
+
+                
                 </div>
-                {% if user == comment.user %}
+                {% if user.id == comment.user.id %}
                 <div class="buttons_group">
-                    <button onclick="open_edit_form()">Edit</button>
-                    <button onclick="open_delete_form()">Delete</button>
+                    <button type="button" onclick="open_edit_form('{{ comment.id }}')">Edit</button>
+                    <button type="button" onclick="open_delete_form('{{ comment.id }}')">Delete</button>
                 </div>
                 {% endif %}
                 </div>
-                <form method="post" id="edit_form">
+                <form method="post" id="edit_form_{{ comment.id }}" style="display: none;">
                     {% csrf_token %}
                     <input type="hidden" name="id" value="{{ comment.id }}">
                     <textarea name="text">{{ comment.text }}</textarea>
                     <button type="submit" name="edit">Save</button>
-                    <button onclick="close_edit_form()">Close</button>
+                    <button type="button" onclick="close_edit_form('{{ comment.id }}')">Close</button>
                 </form>
 
-                <form method="post" style="display:inline;" id="delete_form">
+                <form method="post" id="delete_form_{{ comment.id }}" style="display:none;">
                     {% csrf_token %}
                     <input type="hidden" name="id" value="{{ comment.id }}">
                     <button type="submit" name="delete">Delete</button>
-                    <button onclick="close_delete_form()">Close</button>
+                    <button type="button" onclick="close_delete_form('{{ comment.id }}')">Close</button>
                 </form>
+                
 
                 
                 
@@ -221,24 +224,24 @@
                 "detailed_task_dialog"
             ).style.display = "none";
         }
-        function open_edit_form() {
+        function open_edit_form(commentId) {
             document.getElementById(
-                "edit_form"
+                `edit_form_${commentId}`
             ).style.display = "block";
         }
-        function close_edit_form() {
+        function close_edit_form(commentId) {
             document.getElementById(
-                "edit_form"
+                `edit_form_${commentId}`
             ).style.display = "none";
         }
-        function open_delete_form() {
+        function open_delete_form(commentId) {
             document.getElementById(
-                "delete_form"
+                `delete_form_${commentId}`
             ).style.display = "block";
         }
-        function close_delete_form() {
+        function close_delete_form(commentId) {
             document.getElementById(
-                "delete_form"
+                `delete_form_${commentId}`
             ).style.display = "none";
         }
     </script>

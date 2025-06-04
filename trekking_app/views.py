@@ -46,14 +46,23 @@ class TaskFormView(LoginRequiredMixin, FormView):
         #context = self.get_context_data(tasks=tasks, popup=True)
         view_name = request.resolver_match.view_name
 
+        tasks = Task.objects.filter(user_id=self.user.id)
+        view_name = request.resolver_match.view_name
+        comment = CommentForm()
+        comments = Comment.objects.filter(task=self.task)
+
+        if not comments:
+            comments = "No comments"
+
         if self.task and view_name == 'edit_task':
             form = TaskForm(initial=self.get_initial())
-            context = self.get_context_data(task=self.task, tasks=tasks, form=form, popup=True)
+            context = self.get_context_data(task=self.task, tasks=tasks, form=form, popup=True, comments=comments, comment=comment)
         elif self.task and view_name == 'delete_task':
             context = self.get_context_data(tasks=tasks, popup_delete=True)
         elif view_name == 'add_task':
             form = TaskForm()
-            context = self.get_context_data(task=self.task, tasks=tasks, form=form, popup=True)
+            comments = "No comments"
+            context = self.get_context_data(task=self.task, tasks=tasks, form=form, popup=True, comments=comments, comment=comment)
         else:
             context = self.get_context_data(tasks=tasks)
 
@@ -76,6 +85,18 @@ class TaskFormView(LoginRequiredMixin, FormView):
             self.action = "edit"
         if 'add' in request.POST:
             self.action = "add"
+        
+        id = request.POST.get("id")
+        if self.task and 'comment_added' in request.POST:
+            comment = CommentForm(request.POST)
+            user = request.user
+            if comment.is_valid():
+                Comment.objects.create(
+                    text=comment.cleaned_data['text'],
+                    user=user,
+                    task=self.task
+                )
+                return redirect('edit_task', task_id = self.task_id)
 
         return super().post(request, *args, **kwargs)
 
@@ -142,13 +163,14 @@ class ViewTaskBoard(LoginRequiredMixin, FormView):
         if self.task and view_name == 'detailed_task':
             form = TaskForm(initial=self.get_initial())
             task_author = []
-            for c in comments:
-                if c.user == self.user:
-                    task_author.append(c.id)
+            if comments != "No comments":
+                for c in comments:
+                    if c.user == self.user:
+                        task_author.append(c.id)
 
-            context = self.get_context_data(task=self.task, tasks=tasks, form=form, popup=True, username=self.user.username, user_id=self.user.id, comment=comment, comments=comments, task_author=task_author)
+            context = self.get_context_data(task=self.task, tasks=tasks, form=form, popup=True, username=self.user.username, user_id=self.user.id, comment=comment, comments=comments, task_author=task_author, user=self.request.user)
         else:
-            context = self.get_context_data(tasks=tasks, form=form, popup=True, username=self.user.username, user_id=self.user.id, comment=comment)
+            context = self.get_context_data(tasks=tasks, form=form, popup=True, username=self.user.username, user_id=self.user.id, comment=comment, user=self.request.user)
 
         
         context["css_file"] = 'styles.css'
@@ -176,7 +198,7 @@ class ViewTaskBoard(LoginRequiredMixin, FormView):
                     comment.save()
             except Comment.DoesNotExist:
                 pass
-                return redirect('detailed_task', task_id=self.task_id)
+            return redirect('detailed_task', task_id=self.task_id)
 
         elif 'delete' in request.POST and id:
             comment = Comment.objects.get(id=id, user=request.user)

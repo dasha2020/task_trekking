@@ -147,6 +147,7 @@
     <div id="overlay1" style="display: block;"></div>
     <div id="detailed_task_dialog" style="display: block;">
         <h2>Edit Task</h2>
+        <div class="horizontal_comments">
         <form method="post" novalidate>
             {% csrf_token %}
             <div class="vertical_form">
@@ -197,6 +198,72 @@
             </button>
             </div>
         </form>
+
+        <div class="comments_div">
+            <form method="post" class="comment" novalidate>
+                {% csrf_token %}
+                <div class="mb-3">
+                    
+                    {{ comment.text.label_tag }}
+                    {{ comment.text }}
+                    
+                    {% if comment.text.errors %}
+                        <div class="text-danger">{{ comment.text.errors }}</div>
+                    {% endif %}
+                </div>
+                <button type="submit" name="comment_added" class="add_btn">Add Comment</button>
+            </form>
+            <hr>
+            <h2>Comments</h2>
+            {% if comments != "No comments" %}
+            <div class="comments">
+            {% for comment in comments %}
+                    <div class="horizontal1">
+                    <div>
+                
+                    <div class="horizontal_date_name"><b>{{ comment.user.username }}</b>
+                    {% if comment.id in task_author %}
+                    <p>Author</p>
+                    {% endif %}
+                    <p>{{ comment.date }}</p></div>
+                    <p>{{ comment.text }}</p>
+    
+                    
+                    </div>
+                    {% if user.id == comment.user.id %}
+                    <div class="buttons_group">
+                        <button type="button" onclick="open_edit_form('{{ comment.id }}')">Edit</button>
+                        <button type="button" onclick="open_delete_form('{{ comment.id }}')">Delete</button>
+                    </div>
+                    {% endif %}
+                    </div>
+                    <form method="post" id="edit_form_{{ comment.id }}" style="display: none;">
+                        {% csrf_token %}
+                        <input type="hidden" name="id" value="{{ comment.id }}">
+                        <textarea name="text">{{ comment.text }}</textarea>
+                        <button type="submit" name="edit">Save</button>
+                        <button type="button" onclick="close_edit_form('{{ comment.id }}')">Close</button>
+                    </form>
+    
+                    <form method="post" id="delete_form_{{ comment.id }}" style="display:none;">
+                        {% csrf_token %}
+                        <input type="hidden" name="id" value="{{ comment.id }}">
+                        <button type="submit" name="delete">Delete</button>
+                        <button type="button" onclick="close_delete_form('{{ comment.id }}')">Close</button>
+                    </form>
+                    
+    
+                    
+                    
+                
+            {% endfor %}
+            </div>
+            {% endif %}
+            {% if comments == "No comments" %}
+                <p>No comments yet. Be the first to comment.</p>
+            {% endif %}
+            </div>
+            </div>
         
     </div>
     {% endif %}
