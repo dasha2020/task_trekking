@@ -155,7 +155,7 @@ class ViewTaskBoard(LoginRequiredMixin, FormView):
         return render(request, "another_user_board.html", context)
     
     def post(self, request, *args, **kwargs):
-        
+        id = request.POST.get("id")
         if 'cancel' in request.POST:
             return redirect("look_into_board", user_id=self.user.id)
         if self.task and 'comment_added' in request.POST:
@@ -168,7 +168,21 @@ class ViewTaskBoard(LoginRequiredMixin, FormView):
                     task=self.task
                 )
                 return redirect('detailed_task', task_id = self.task_id)
-        
+        elif 'edit' in request.POST and id:
+            try:
+                comment = Comment.objects.get(id=id, user=request.user)
+                if comment.user == request.user:
+                    comment.text = request.POST.get('text')
+                    comment.save()
+            except Comment.DoesNotExist:
+                pass
+                return redirect('detailed_task', task_id=self.task_id)
+
+        elif 'delete' in request.POST and id:
+            comment = Comment.objects.get(id=id, user=request.user)
+            if comment.user == request.user:
+                comment.delete()
+            return redirect('detailed_task', task_id=self.task_id)
 
         return super().post(request, *args, **kwargs)
 

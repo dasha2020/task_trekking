@@ -165,6 +165,20 @@
                 </div>
                 {% endif %}
                 </div>
+                <form method="post" id="edit_form">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{ comment.id }}">
+                    <textarea name="text">{{ comment.text }}</textarea>
+                    <button type="submit" name="edit">Save</button>
+                    <button onclick="close_edit_form()">Close</button>
+                </form>
+
+                <form method="post" style="display:inline;" id="delete_form">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{ comment.id }}">
+                    <button type="submit" name="delete">Delete</button>
+                    <button onclick="close_delete_form()">Close</button>
+                </form>
 
                 
                 
