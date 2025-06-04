@@ -79,6 +79,8 @@
     <div id="detailed_task_dialog" style="display: block;">
         <h2>Info about Task</h2>
 
+        <div class="horizontal_comments">
+
         <form method="post" novalidate>
             {% csrf_token %}
                 <div class="vertical_form" style="pointer-events: none;">
@@ -127,11 +129,14 @@
                 Close
             </button>
         </form>
+        <div class="comments_div">
         <form method="post" class="comment" novalidate>
             {% csrf_token %}
             <div class="mb-3">
+                
                 {{ comment.text.label_tag }}
                 {{ comment.text }}
+                
                 {% if comment.text.errors %}
                     <div class="text-danger">{{ comment.text.errors }}</div>
                 {% endif %}
@@ -143,6 +148,8 @@
         {% if comments != "No comments" %}
         <div class="comments">
         {% for comment in comments %}
+                <div class="horizontal1">
+                <div>
             
                 <div class="horizontal_date_name"><b>{{ comment.user.username }}</b>
                 {% if comment.id in task_author %}
@@ -150,6 +157,16 @@
                 {% endif %}
                 <p>{{ comment.date }}</p></div>
                 <p>{{ comment.text }}</p>
+                </div>
+                {% if user == comment.user %}
+                <div class="buttons_group">
+                    <button onclick="open_edit_form()">Edit</button>
+                    <button onclick="open_delete_form()">Delete</button>
+                </div>
+                {% endif %}
+                </div>
+
+                
                 
             
         {% endfor %}
@@ -158,6 +175,8 @@
         {% if comments == "No comments" %}
             <p>No comments yet. Be the first to comment.</p>
         {% endif %}
+        </div>
+        </div>
         
         
     </div>
@@ -186,6 +205,26 @@
             ).style.display = "none";
             document.getElementById(
                 "detailed_task_dialog"
+            ).style.display = "none";
+        }
+        function open_edit_form() {
+            document.getElementById(
+                "edit_form"
+            ).style.display = "block";
+        }
+        function close_edit_form() {
+            document.getElementById(
+                "edit_form"
+            ).style.display = "none";
+        }
+        function open_delete_form() {
+            document.getElementById(
+                "delete_form"
+            ).style.display = "block";
+        }
+        function close_delete_form() {
+            document.getElementById(
+                "delete_form"
             ).style.display = "none";
         }
     </script>

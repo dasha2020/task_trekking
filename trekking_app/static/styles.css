@@ -117,9 +117,35 @@ h2 {
     margin-right: 25px;
 }
 
+.horizontal1 {
+    display: flex; 
+    flex-direction: row;
+}
+
+.buttons_group {
+    margin-left: 45px;
+}
+
+.comments_div {
+    margin-left: 50px;
+}
+
+#edit_form {
+    display: none;
+}
+
+#delete_form {
+    display: none;
+}
+
 .vertical_div {
     display: flex; 
     flex-direction: column;
+}
+
+.horizontal_comments {
+    display: flex; 
+    flex-direction: row;
 }
 
 .vertical_form label {
@@ -285,7 +311,7 @@ h2 {
 }
 
 .comments {
-    max-height: 55px;
+    max-height: 150px;
     overflow-y: auto;
     border: 1px solid #ccc;
     padding: 10px;
@@ -403,7 +429,7 @@ h2 {
     transform: translate(-50%, -50%);
     background-color: white;
     padding: 30px;
-    width: 500px;
+    width: 950px;
     max-width: 90%;
     border-radius: 8px;
     z-index: 1000;

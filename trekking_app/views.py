@@ -50,10 +50,8 @@ class TaskFormView(LoginRequiredMixin, FormView):
             form = TaskForm(initial=self.get_initial())
             context = self.get_context_data(task=self.task, tasks=tasks, form=form, popup=True)
         elif self.task and view_name == 'delete_task':
-            print("DEBUG: Deleting task")
             context = self.get_context_data(tasks=tasks, popup_delete=True)
         elif view_name == 'add_task':
-            print("DEBUG: Adding task")
             form = TaskForm()
             context = self.get_context_data(task=self.task, tasks=tasks, form=form, popup=True)
         else:
@@ -157,6 +155,7 @@ class ViewTaskBoard(LoginRequiredMixin, FormView):
         return render(request, "another_user_board.html", context)
     
     def post(self, request, *args, **kwargs):
+        
         if 'cancel' in request.POST:
             return redirect("look_into_board", user_id=self.user.id)
         if self.task and 'comment_added' in request.POST:
@@ -169,6 +168,7 @@ class ViewTaskBoard(LoginRequiredMixin, FormView):
                     task=self.task
                 )
                 return redirect('detailed_task', task_id = self.task_id)
+        
 
         return super().post(request, *args, **kwargs)
 
@@ -223,16 +223,11 @@ class ViewAllBoards(LoginRequiredMixin, View):
     def get(self, request, user_id=None):
         tasks = Task.objects.select_related('user')
         user = request.user
-    
-        #sorted_tasks = defaultdict(list)
-        #for task in tasks:
-            #sorted_tasks[task.user].append(task)
         user_list = []
         for task in tasks: 
             if task.user != user:
-                user_list.append(task.user)
-
-        #user_list = list({task.user for task in tasks})
+                if task.user not in user_list:
+                    user_list.append(task.user)
         print(user_list)
         context = self.get_context_data(user_list=user_list)
         return render(request, 'boards.html', context)
