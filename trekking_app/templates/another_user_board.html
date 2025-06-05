@@ -66,9 +66,9 @@
         <br>
         <div class="description">{{task.description}}</div>
         <div class="priority">{{task.get_priority_display }}</div>
-        <div class="created_at" onclick="open_date(this)">{{ task.created_at|date:"F j" }}</div>
+        <div class="created_at" onclick="open_date(this)"> Created: {{ task.created_at|date:"F j" }}</div>
         <div class="date" onclick="close_date(this)">{{ task.created_at }}</div>
-        <div class="deadline">{{task.deadline|date:"F j H:i"}}</div>
+        <div class="deadline">Deadline: {{task.deadline|date:"F j H:i"}}</div>
         <div class="status">{{task.get_status_display}}</div>
         <a href="{% url 'detailed_task' task_id=task.id %}" class="openpopup">More...</a>
     </div>
@@ -163,7 +163,7 @@
                 {% if user.id == comment.user.id %}
                 <div class="buttons_group">
                     <button type="button" onclick="open_edit_form('{{ comment.id }}')" class="buttons_group_buttons_edit">Edit</button>
-                    <button type="button" onclick="open_delete_form('{{ comment.id }}')" class="buttons_group_buttons">Delete</button>
+                    <button type="button" onclick="open_delete_form('{{ comment.id }}')" class="buttons_group_buttons_delete">Delete</button>
                 </div>
                 {% endif %}
                 </div>
@@ -178,7 +178,7 @@
                         {% if user.id == reply.user.id %}
                         <div class="buttons_group_home">
                             <button type="button" onclick="open_edit_form('{{ comment.id }}')" class="buttons_group_buttons_edit">Edit</button>
-                            <button type="button" onclick="open_delete_form('{{ comment.id }}')" class="buttons_group_buttons">Delete</button>
+                            <button type="button" onclick="open_delete_form('{{ comment.id }}')" class="buttons_group_buttons_delete">Delete</button>
                         </div>
                         {% endif %}
         

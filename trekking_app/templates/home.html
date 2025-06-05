@@ -244,7 +244,7 @@
                     {% if user.id == comment.user.id %}
                     <div class="buttons_group">
                         <button type="button" onclick="open_edit_form('{{ comment.id }}')" class="buttons_group_buttons_edit">Edit</button>
-                        <button type="button" onclick="open_delete_form('{{ comment.id }}')">Delete</button>
+                        <button type="button" onclick="open_delete_form('{{ comment.id }}')" class="buttons_group_buttons_delete">Delete</button>
                     </div>
                     {% endif %}
 
@@ -260,7 +260,7 @@
                         {% if user.id == reply.user.id %}
                         <div class="buttons_group_home">
                             <button type="button" onclick="open_edit_form('{{ comment.id }}')" class="buttons_group_buttons_edit">Edit</button>
-                            <button type="button" onclick="open_delete_form('{{ comment.id }}')" class="buttons_group_buttons">Delete</button>
+                            <button type="button" onclick="open_delete_form('{{ comment.id }}')" class="buttons_group_buttons_delete">Delete</button>
                         </div>
                         {% endif %}
         
