@@ -126,8 +126,26 @@ h2 {
     margin-left: 45px;
 }
 
+.buttons_group_home {
+    margin-left: 0px;
+}
+
+.buttons_group_buttons_edit {
+    width: 65px;
+    height: 35px;
+    background-color: #23008b;
+    font-family: 'Hanken Grotesk', sans-serif;
+    color: #f0f0f0;
+    transition: background-color 0.3s ease;
+}
+
+.buttons_group_buttons_edit:hover {
+    background-color: #25319e;
+}
+
 .comments_div {
     margin-left: 50px;
+    height: 300px;
 }
 
 #edit_form {
@@ -136,6 +154,15 @@ h2 {
 
 #delete_form {
     display: none;
+}
+
+.reply {
+    background-color: #ebebeb;
+    border-radius: 15px 15px 15px 15px;
+    min-height: 65px;
+    width: 355px;
+    padding: 10px;
+    margin-top: 5px;
 }
 
 .vertical_div {
@@ -311,7 +338,7 @@ h2 {
 }
 
 .comments {
-    max-height: 150px;
+    max-height: 330px;
     overflow-y: auto;
     border: 1px solid #ccc;
     padding: 10px;

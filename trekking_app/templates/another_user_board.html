@@ -162,11 +162,30 @@
                 </div>
                 {% if user.id == comment.user.id %}
                 <div class="buttons_group">
-                    <button type="button" onclick="open_edit_form('{{ comment.id }}')">Edit</button>
-                    <button type="button" onclick="open_delete_form('{{ comment.id }}')">Delete</button>
+                    <button type="button" onclick="open_edit_form('{{ comment.id }}')" class="buttons_group_buttons_edit">Edit</button>
+                    <button type="button" onclick="open_delete_form('{{ comment.id }}')" class="buttons_group_buttons">Delete</button>
                 </div>
                 {% endif %}
                 </div>
+                {% for reply in comment.comment_set.all %}
+                    <div class="reply">
+                
+                        <div class="horizontal_date_name"><b>{{ reply.user.username }}</b>
+                        <p>{{ reply.date }}</p>
+                        <b style="color: rgb(30, 106, 219);">Author</b>
+                        </div>
+                        <p>{{ reply.text }}</p>
+                        {% if user.id == reply.user.id %}
+                        <div class="buttons_group_home">
+                            <button type="button" onclick="open_edit_form('{{ comment.id }}')" class="buttons_group_buttons_edit">Edit</button>
+                            <button type="button" onclick="open_delete_form('{{ comment.id }}')" class="buttons_group_buttons">Delete</button>
+                        </div>
+                        {% endif %}
+        
+                        
+                    </div>
+                    
+                {% endfor %}
                 <form method="post" id="edit_form_{{ comment.id }}" style="display: none;">
                     {% csrf_token %}
                     <input type="hidden" name="id" value="{{ comment.id }}">

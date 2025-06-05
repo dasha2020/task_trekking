@@ -49,7 +49,7 @@ class TaskFormView(LoginRequiredMixin, FormView):
         tasks = Task.objects.filter(user_id=self.user.id)
         view_name = request.resolver_match.view_name
         comment = CommentForm()
-        comments = Comment.objects.filter(task=self.task)
+        comments = Comment.objects.filter(task=self.task, reply__isnull=True)
 
         if not comments:
             comments = "No comments"
@@ -97,6 +97,34 @@ class TaskFormView(LoginRequiredMixin, FormView):
                     task=self.task
                 )
                 return redirect('edit_task', task_id = self.task_id)
+        
+        elif 'edit' in request.POST and id:
+            try:
+                comment = Comment.objects.get(id=id, user=request.user)
+                if comment.user == request.user:
+                    comment.text = request.POST.get('text')
+                    comment.save()
+            except Comment.DoesNotExist:
+                pass
+            return redirect('edit_task', task_id=self.task_id)
+
+        elif 'delete' in request.POST and id:
+            comment = Comment.objects.get(id=id, user=request.user)
+            if comment.user == request.user:
+                comment.delete()
+            return redirect('edit_task', task_id=self.task_id)
+
+        elif 'reply' in request.POST and id:
+            comment = Comment.objects.get(id=id)
+            tex = "@" + comment.user.username + " " + request.POST.get('text')
+            new_comment = Comment.objects.create(
+                text=tex,
+                user=request.user,
+                task=self.task,
+                reply = comment
+            )
+
+            return redirect('edit_task', task_id=self.task_id)
 
         return super().post(request, *args, **kwargs)
 
@@ -156,7 +184,7 @@ class ViewTaskBoard(LoginRequiredMixin, FormView):
         #context = self.get_context_data(tasks=tasks, popup=True)
         view_name = request.resolver_match.view_name
         comment = CommentForm()
-        comments = Comment.objects.filter(task=self.task)
+        comments = Comment.objects.filter(task=self.task, reply__isnull=True)
         if not comments:
             comments = "No comments"
 
