@@ -225,7 +225,9 @@
                     {% if comment.id in task_author %}
                     <p>Author</p>
                     {% endif %}
-                    <p>{{ comment.date }}</p></div>
+                    <p>{{ comment.date }}</p>
+                    <button type="button" onclick="open_reply_form('{{ comment.id }}')">Edit</button>
+                    </div>
                     <p>{{ comment.text }}</p>
     
                     

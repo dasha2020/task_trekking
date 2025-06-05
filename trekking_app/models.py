@@ -27,6 +27,7 @@ class Comment(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     task = models.ForeignKey(Task, on_delete=models.SET_NULL, null=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    reply = models.ForeignKey('self', on_delete=models.SET_NULL, null=True)
 
 
 
