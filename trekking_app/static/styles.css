@@ -142,6 +142,7 @@ h2 {
     font-family: 'Hanken Grotesk', sans-serif;
     color: #f0f0f0;
     transition: background-color 0.3s ease;
+    border-color: #140052;
 }
 
 .buttons_group_buttons_edit:hover {
@@ -155,6 +156,7 @@ h2 {
     font-family: 'Hanken Grotesk', sans-serif;
     color: #f0f0f0;
     transition: background-color 0.3s ease;
+    border-color: #470b00;
 }
 
 .buttons_group_buttons_delete:hover {
@@ -203,6 +205,7 @@ h2 {
     height: 35px;
     background-color: rgb(255, 97, 76);
     transition: background-color 0.3s ease;
+    border-color: #b32400;
 }
 
 .add_btn:hover {
@@ -216,6 +219,7 @@ h2 {
     margin-left: 25px;
     background-color: rgb(119, 119, 119);
     transition: background-color 0.3s ease;
+    border-color: #3f3f3f;
 }
 
 .close_btn:hover {
@@ -305,7 +309,7 @@ h2 {
     font-family: 'Hanken Grotesk', sans-serif;
     font-size: 18px;
     font-weight: 500;
-    border: rgb(51, 132, 255);
+    border: rgb(218, 44, 0);
     color: #111111;
 
     display: inline-block;
@@ -327,7 +331,7 @@ h2 {
     font-family: 'Hanken Grotesk', sans-serif;
     font-size: 16px;
     font-weight: 500;
-    border: rgb(51, 132, 255);
+    border: rgb(204, 31, 0);
     color: #111111;
 
     display: inline-block;
@@ -387,7 +391,7 @@ h2 {
     font-family: 'Hanken Grotesk', sans-serif;
     font-size: 18px;
     font-weight: 500;
-    border: rgb(51, 132, 255);
+    border: rgb(158, 32, 0);
     color: #111111;
 
     display: inline-block;
@@ -410,13 +414,13 @@ h2 {
     left: 0; 
     top: 0;
     z-index: 0;
-    border: rgb(51, 132, 255);
     color: #111111;
     display: inline-block;
     text-align: center;
     text-decoration: none;
     transition: background-color 0.3s ease;
     font-size: 21px;
+    border-color: #444444;
 
 }
 
@@ -441,6 +445,7 @@ h2 {
     font-size: 16px;
     transition: background-color 0.3s ease;
     margin-bottom: 15px;
+    border-color: #140052;
 }
 
 .button:hover {
@@ -513,7 +518,6 @@ h2 {
     color: white;
     text-align: center;
     text-decoration: none;
-    border-radius: 3px;
     font-size: 16px;
     transition: background-color 0.3s ease;
     margin-bottom: 15px;
@@ -524,6 +528,26 @@ h2 {
 }
 
 .button_new:hover {
+    background-color: rgb(34, 51, 201);
+}
+
+.button_new1 {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #23008b;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    margin-bottom: 15px;
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-weight: 700;
+    border-color: #12043d;
+    width: 100%;
+}
+
+.button_new1:hover {
     background-color: rgb(34, 51, 201);
 }
 
@@ -573,6 +597,7 @@ h2 {
     font-family: 'Hanken Grotesk', sans-serif;
     color: #141414;
     transition: background-color 0.3s ease;
+    border-color: rgb(148, 50, 26);
 }
 
 .add_task:hover {

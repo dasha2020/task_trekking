@@ -6,9 +6,9 @@
 <form method="POST" class="loginform">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit" class="button_new">Register</button>
+    <button type="submit" class="button_new1">Register</button>
 </form>
-<a href="{% url 'login' %}" class="button_new">Log in</a>
+<a href="{% url 'login' %}" class="button_new1">Log in</a>
 {% if error %}
     <p style="color:rgb(148, 0, 0);">{{ error }}</p>
 {% endif %}
